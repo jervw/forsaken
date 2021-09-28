@@ -1,0 +1,108 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    [SerializeField]
+    public float movementSpeed = 3f;
+
+    [SerializeField]
+    public float bulletSpeed = 5f;
+
+    [SerializeField]
+    public float fireDelay = 0.2f;
+
+    [SerializeField]
+    public Transform firePosition;
+
+    [SerializeField]
+    public GameObject projectile;
+
+    private Rigidbody2D rb2d;
+    private InputMap inputManager;
+    private Vector2 movementInput;
+
+
+
+    private Camera main;
+
+    private bool mouseShooting;
+    private bool canShoot = true;
+
+    private void Awake()
+    {
+        rb2d = GetComponent<Rigidbody2D>();
+        inputManager = new InputMap();
+        inputManager.PlayerControls.Shoot.performed += ctx => mouseShooting = AsBool(ctx.ReadValue<float>());
+
+
+        inputManager.PlayerControls.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
+
+    }
+
+    private void Start()
+    {
+        main = Camera.main;
+    }
+
+    private void Update()
+    {
+
+
+
+        if (mouseShooting && canShoot)
+        {
+            canShoot = false;
+            GameObject p = Instantiate(projectile, firePosition.position, transform.rotation);
+            p.GetComponent<Rigidbody2D>().AddForce(firePosition.right * bulletSpeed, ForceMode2D.Impulse);
+            StartCoroutine(ShootDelay());
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        // Get mouse pos and translate to world point.
+        Vector2 mouseScreenPosition = inputManager.PlayerControls.MousePosition.ReadValue<Vector2>();
+        Vector3 mouseWorldPostition = main.ScreenToWorldPoint(mouseScreenPosition);
+
+
+        // Apply rotation to gameobject according ange of mouse position.
+        Vector3 targetDirection = mouseWorldPostition - transform.position;
+        var angle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
+
+
+        // Movement using velocity
+        Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0);
+        rb2d.velocity = new Vector3(movementInput.x * movementSpeed, movementInput.y * movementSpeed, 0f);
+
+        // rb2d.MovePosition(transform.position + movement * movementSpeed * Time.deltaTime);
+
+
+
+
+    }
+
+    IEnumerator ShootDelay()
+    {
+        yield return new WaitForSeconds(fireDelay);
+        canShoot = true;
+    }
+
+    public static bool AsBool(float value)
+    {
+        return Mathf.Approximately(Mathf.Min(value, 1), 1);
+    }
+
+    private void OnEnable()
+    {
+        inputManager.Enable();
+    }
+
+    private void OnDisable()
+    {
+        inputManager.Disable();
+    }
+}
