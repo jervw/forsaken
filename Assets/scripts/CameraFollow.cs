@@ -12,7 +12,7 @@ public class CameraFollow : MonoBehaviour
 
     private Transform target;
 
-    public BoxCollider2D boundaries;
+    public SpriteRenderer groundSprite;
 
 
     private Camera cam;
@@ -28,22 +28,18 @@ public class CameraFollow : MonoBehaviour
         target = GameObject.FindWithTag("Player").transform;
 
 
-        minBounds = boundaries.bounds.min;
-        maxBounds = boundaries.bounds.max;
+        minBounds = groundSprite.bounds.min;
+        maxBounds = groundSprite.bounds.max;
         halfHeight = cam.orthographicSize;
         halfWidth = halfHeight * Screen.width / Screen.height;
-
-        boundaries.enabled = false;
 
     }
 
     void LateUpdate()
     {
         transform.position = target.position + cameraOffset;
-
         float clampedX = Mathf.Clamp(transform.position.x, minBounds.x + halfWidth, maxBounds.x - halfWidth);
         float clampedY = Mathf.Clamp(transform.position.y, minBounds.y + halfHeight, maxBounds.y - halfHeight);
         transform.position = new Vector3(clampedX, clampedY, transform.position.z);
-
     }
 }
