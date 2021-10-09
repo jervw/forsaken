@@ -13,7 +13,6 @@ public class Enemy : MonoBehaviour
     {
         currentHp = maxHp;
         target = GameObject.FindGameObjectWithTag("Player").transform;
-
     }
 
     void Update()
@@ -28,7 +27,7 @@ public class Enemy : MonoBehaviour
     {
         if (other.tag == "Bullet")
             currentHp -= 5;
-
-
+        else if (other.tag == "Player")
+            Debug.Log(gameObject.name + " collided with player");
     }
 }
