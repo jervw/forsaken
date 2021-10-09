@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     {
         currentHp = maxHp;
         target = GameObject.FindGameObjectWithTag("Player").transform;
+
     }
 
     void Update()
