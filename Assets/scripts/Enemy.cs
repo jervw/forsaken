@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    [SerializeField]
+    float chaseSpeed;
 
     private Transform target;
 
@@ -11,15 +13,20 @@ public class Enemy : MonoBehaviour
     private int currentHp;
     void Start()
     {
-
-
         currentHp = maxHp;
         target = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     void Update()
     {
+        float distance = (target.position - transform.position).magnitude;
+
+        // Look at player
         transform.right = target.position - transform.position;
+
+        // Chase player
+        if (distance > 1)
+            transform.Translate(new Vector2(chaseSpeed * Time.deltaTime, 0));
 
         if (currentHp <= 0)
             Destroy(gameObject);
