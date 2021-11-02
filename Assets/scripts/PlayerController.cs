@@ -8,34 +8,34 @@ using Random = UnityEngine.Random;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField]
-    public float movementSpeed = 3f;
+    float movementSpeed;
 
     [SerializeField]
-    public int weaponMaxAmmo = 30;
+    int weaponMaxAmmo;
 
     [SerializeField]
-    public float bulletSpeed = 5f;
+    float bulletSpeed;
 
     [SerializeField]
-    public float weaponReloadSpeed = 2f;
+    float weaponReloadSpeed;
 
     [SerializeField]
-    public float bulletSpread;
+    float bulletSpread;
 
     [SerializeField]
-    public float fireDelay = 0.2f;
+    float fireDelay;
 
     [SerializeField]
-    public Transform firePosition;
+    Transform firePosition;
 
     [SerializeField]
-    public GameObject projectile;
+    GameObject projectile;
 
     [SerializeField]
-    public Transform upperBody;
+    Transform upperBody;
 
     [SerializeField]
-    public Transform lowerBody;
+    Transform lowerBody;
 
     private Rigidbody2D rb2d;
     private InputMapper inputManager;
@@ -43,9 +43,7 @@ public class PlayerController : MonoBehaviour
     private Camera mainCam;
 
     private int weaponCurrentAmmo;
-    private bool currentlyReloading;
-    private bool mouseShooting;
-    private bool canShoot = true;
+    private bool currentlyReloading, mouseShooting, canShoot;
 
     private void Awake()
     {
@@ -60,20 +58,19 @@ public class PlayerController : MonoBehaviour
     {
         mainCam = Camera.main;
         weaponCurrentAmmo = weaponMaxAmmo;
-
+        canShoot = true;
     }
 
     private void Update()
     {
-        Debug.Log(upperBody.transform.rotation.eulerAngles);
 
         if (mouseShooting && canShoot && AmmoCheck())
         {
             canShoot = false;
-            var spread = new Vector3(0, 0, Random.Range(0, 90));
-
-            GameObject p = Instantiate(projectile, firePosition.position, Quaternion.Euler(upperBody.transform.rotation.eulerAngles - spread));
-            p.GetComponent<Rigidbody2D>().AddForce(p.transform.up * bulletSpeed, ForceMode2D.Impulse);
+            var spread = new Vector3(0, 0, Random.Range(0, 10));
+            GameObject p = Instantiate(
+                projectile, firePosition.position, Quaternion.Euler(upperBody.transform.rotation.eulerAngles - spread));
+            p.GetComponent<Rigidbody2D>().AddForce(p.transform.right * bulletSpeed, ForceMode2D.Impulse);
             weaponCurrentAmmo--;
             StartCoroutine(ShootDelay());
         }
@@ -88,12 +85,12 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         // Get mouse pos and translate to world point.
-        Vector2 mouseScreenPosition = inputManager.PlayerControls.MousePosition.ReadValue<Vector2>();
-        Vector3 mouseWorldPostition = mainCam.ScreenToWorldPoint(mouseScreenPosition);
+        var mouseScreenPosition = inputManager.PlayerControls.MousePosition.ReadValue<Vector2>();
+        var mouseWorldPostition = mainCam.ScreenToWorldPoint(mouseScreenPosition);
 
 
         // Apply rotation to gameobject according ange of mouse position.
-        Vector3 targetDirection = mouseWorldPostition - upperBody.transform.position;
+        var targetDirection = mouseWorldPostition - upperBody.transform.position;
         var upperBodyAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
         upperBody.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, upperBodyAngle));
 
@@ -109,9 +106,6 @@ public class PlayerController : MonoBehaviour
         // Movement using velocity
         Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0);
         rb2d.velocity = new Vector3(movementInput.x * movementSpeed, movementInput.y * movementSpeed, 0f);
-
-
-
     }
 
     private bool AmmoCheck()

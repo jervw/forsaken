@@ -10,23 +10,18 @@ public class CameraFollow : MonoBehaviour
     [SerializeField]
     public Vector3 cameraOffset;
 
-    private Transform target;
-
     public SpriteRenderer groundSprite;
 
-
+    private Transform target;
     private Camera cam;
+    private Vector3 minBounds, maxBounds;
     private float halfHeight, halfWidth;
 
-    private Vector3 minBounds, maxBounds;
-
-    // Start is called before the first frame update
     void Start()
     {
         cam = GetComponent<Camera>();
 
         target = GameObject.FindWithTag("Player").transform;
-
 
         minBounds = groundSprite.bounds.min;
         maxBounds = groundSprite.bounds.max;

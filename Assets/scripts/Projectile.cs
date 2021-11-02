@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public float projectileLifetime = 5f;
+
     private void Start()
     {
-        StartCoroutine(WaitAndDestroy(5f));
-
-
+        StartCoroutine(WaitAndDestroy(projectileLifetime));
     }
 
     private IEnumerator WaitAndDestroy(float waitTime)
