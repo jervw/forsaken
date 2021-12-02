@@ -55,3 +55,28 @@ The following packages were updated:
   com.unity.2d.spriteshape from version 5.1.4 to 5.1.5
   com.unity.collab-proxy from version 1.7.1 to 1.13.5
   com.unity.test-framework from version 1.1.27 to 1.1.29
+
+=== Sat Nov  6 20:28:12 2021
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.2d.animation from version 5.0.8 to 7.0.0
+  com.unity.2d.pixel-perfect from version 4.0.1 to 5.0.1
+  com.unity.2d.spriteshape from version 5.1.5 to 7.0.0
+  com.unity.inputsystem from version 1.0.2 to 1.1.1
+  com.unity.shadergraph from version 10.6.0 to 12.1.0
+  com.unity.timeline from version 1.4.8 to 1.6.2
+
+=== Thu Dec  2 02:32:12 2021
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.2d.animation from version 7.0.0 to 7.0.2
+  com.unity.2d.spriteshape from version 7.0.2 to 7.0.3
+  com.unity.collab-proxy from version 1.13.5 to 1.15.1
+  com.unity.render-pipelines.universal from version 12.1.0 to 12.1.1
+  com.unity.shadergraph from version 12.1.0 to 12.1.1

@@ -38,7 +38,6 @@ public class PlayerController : MonoBehaviour
     Transform lowerBody;
 
     private Rigidbody2D rb2d;
-    private InputMapper inputManager;
     private Vector2 movementInput;
     private Camera mainCam;
 
@@ -48,9 +47,6 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        inputManager = new InputMapper();
-        inputManager.PlayerControls.Shoot.performed += ctx => mouseShooting = AsBool(ctx.ReadValue<float>());
-        inputManager.PlayerControls.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
 
     }
 
@@ -64,7 +60,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
 
-        if (mouseShooting && canShoot && AmmoCheck())
+        if (Input.GetMouseButton(0) && canShoot && AmmoCheck())
         {
             canShoot = false;
             var spread = new Vector3(0, 0, Random.Range(0, 10));
@@ -84,9 +80,12 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+        movementInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
         // Get mouse pos and translate to world point.
-        var mouseScreenPosition = inputManager.PlayerControls.MousePosition.ReadValue<Vector2>();
+        var mouseScreenPosition = Input.mousePosition;
         var mouseWorldPostition = mainCam.ScreenToWorldPoint(mouseScreenPosition);
+
 
 
         // Apply rotation to gameobject according ange of mouse position.
@@ -131,15 +130,5 @@ public class PlayerController : MonoBehaviour
     private static bool AsBool(float value)
     {
         return Mathf.Approximately(Mathf.Min(value, 1), 1);
-    }
-
-    private void OnEnable()
-    {
-        inputManager.Enable();
-    }
-
-    private void OnDisable()
-    {
-        inputManager.Disable();
     }
 }

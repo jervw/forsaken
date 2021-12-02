@@ -2,24 +2,32 @@ using UnityEngine;
 
 public class Level : MonoBehaviour
 {
+    public int enemyCount;
     public GameObject ground;
 
-    private Vector2 minBounds, maxBounds;
+
+    Vector2 minBounds, maxBounds;
+    bool initialized = false;
 
     void Start()
     {
-        EdgeCollider2D edgeCol = GetComponentInChildren<EdgeCollider2D>();
+        InitLevel();
+    }
 
+    void InitLevel()
+    {
+        if (initialized) return;
+
+        var edgeCol = GetComponentInChildren<EdgeCollider2D>();
         var groundSprite = ground.GetComponent<SpriteRenderer>();
 
         minBounds = groundSprite.bounds.min;
         maxBounds = groundSprite.bounds.max;
 
-        var botLeftCorner = minBounds;
-        var topLeftCorner = new Vector2(minBounds.x, -minBounds.y);
-        var topRightCorner = maxBounds;
-        var botRightCorner = new Vector2(maxBounds.x, -maxBounds.y);
-
+        Vector2 botLeftCorner = minBounds;
+        Vector2 topLeftCorner = new Vector2(minBounds.x, -minBounds.y);
+        Vector2 topRightCorner = maxBounds;
+        Vector2 botRightCorner = new Vector2(maxBounds.x, -maxBounds.y);
 
         Vector2[] points = edgeCol.points;
         points.SetValue(botLeftCorner, 0);
@@ -28,9 +36,20 @@ public class Level : MonoBehaviour
         points.SetValue(botRightCorner, 3);
         points.SetValue(botLeftCorner, 4);
         edgeCol.points = points;
-
+        initialized = true;
     }
 
+    public int GetEnemyCount() { return enemyCount; }
 
+    public Vector2 GetSize() { return minBounds; }
+
+
+    public Vector2 GetRandomPosition()
+    {
+        InitLevel();
+        float x = Random.Range(minBounds.x, maxBounds.x);
+        float y = Random.Range(minBounds.y, maxBounds.y);
+        return new Vector2(x, y);
+    }
 
 }
