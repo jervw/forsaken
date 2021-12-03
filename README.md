@@ -1,2 +1,2 @@
 # crimson
-Crimsonland gamedev project
+Crimsonland gamedev project, work in progress not in playable state.
