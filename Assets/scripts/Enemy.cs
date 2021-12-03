@@ -19,14 +19,17 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        float distance = (target.position - transform.position).magnitude;
+        if (target != null)
+        {
+            float distance = (target.position - transform.position).magnitude;
 
-        // Look at player
-        transform.right = target.position - transform.position;
+            // Look at player
+            transform.right = target.position - transform.position;
 
-        // Chase player
-        if (distance > 1)
-            transform.Translate(new Vector2(chaseSpeed * Time.deltaTime, 0));
+            // Chase player
+            if (distance > 1)
+                transform.Translate(new Vector2(chaseSpeed * Time.deltaTime, 0));
+        }
 
         if (currentHp <= 0)
             Destroy(gameObject);
