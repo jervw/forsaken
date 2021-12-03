@@ -63,24 +63,9 @@ namespace Com.Jervw.Crimson
         void Update()
         {
 
-            if (!photonView.IsMine) return;
 
 
-            if (Input.GetMouseButton(0) && canShoot && AmmoCheck())
-            {
-                canShoot = false;
-                var spread = new Vector3(0, 0, Random.Range(0, 10));
-                GameObject p = Instantiate(
-                    projectile, firePosition.position, Quaternion.Euler(upperBody.transform.rotation.eulerAngles - spread));
-                p.GetComponent<Rigidbody2D>().AddForce(p.transform.right * bulletSpeed, ForceMode2D.Impulse);
-                weaponCurrentAmmo--;
-                StartCoroutine(ShootDelay());
-            }
-            else if (!AmmoCheck() && canShoot)
-            {
-                canShoot = false;
-                StartCoroutine(WeaponReload());
-            }
+
         }
 
         void FixedUpdate()
@@ -106,9 +91,28 @@ namespace Com.Jervw.Crimson
                 lowerBody.transform.rotation = rotation;
             }
 
+            transform.Translate(movementInput * movementSpeed * Time.deltaTime);
+
+
+            if (Input.GetMouseButton(0) && canShoot && AmmoCheck())
+            {
+                canShoot = false;
+                var spread = new Vector3(0, 0, Random.Range(0, 10));
+                var p = PhotonNetwork.Instantiate("Bullet", firePosition.position, Quaternion.Euler(upperBody.transform.rotation.eulerAngles - spread));
+                p.GetComponent<Rigidbody2D>().AddForce(p.transform.right * bulletSpeed, ForceMode2D.Impulse);
+                weaponCurrentAmmo--;
+                StartCoroutine(ShootDelay());
+            }
+            else if (!AmmoCheck() && canShoot)
+            {
+                canShoot = false;
+                StartCoroutine(WeaponReload());
+            }
+
+
             // Movement using velocity
-            Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0);
-            rb2d.velocity = new Vector3(movementInput.x * movementSpeed, movementInput.y * movementSpeed, 0f);
+            //Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0);
+            //rb2d.velocity = new Vector3(movementInput.x * movementSpeed, movementInput.y * movementSpeed, 0f);
 
         }
 
