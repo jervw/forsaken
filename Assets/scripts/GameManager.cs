@@ -27,6 +27,13 @@ namespace Com.Jervw.Crimson
 
         void Start()
         {
+            if (!PhotonNetwork.IsConnected)
+            {
+                SceneManager.LoadScene("Lobby");
+                return;
+            }
+
+
             if (playerPrefab == null)
                 Debug.LogError("Missing playerPrefab reference");
             else

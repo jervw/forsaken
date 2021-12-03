@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - Bullet
+  - Edge
   layers:
   - Default
   - TransparentFX

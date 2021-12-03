@@ -7,14 +7,33 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     float chaseSpeed;
 
-    private Transform target;
-
+    [SerializeField]
     public int maxHp;
-    private int currentHp;
+
+    Transform target;
+    int currentHp;
+
     void Start()
     {
         currentHp = maxHp;
-        target = GameObject.FindGameObjectWithTag("Player").transform;
+        target = ClosestTarget();
+    }
+
+    Transform ClosestTarget()
+    {
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("Player");
+        Transform bestTarget = null;
+        float closestDistance = Mathf.Infinity;
+        foreach (var target in targets)
+        {
+            float distance = Vector3.Distance(transform.position, target.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                bestTarget = target.transform;
+            }
+        }
+        return bestTarget;
     }
 
     void Update()

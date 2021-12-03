@@ -40,7 +40,7 @@ namespace Com.Jervw.Crimson
 
         public void Connect()
         {
-            Debug.Log("Connecting to server");
+            //Debug.Log("Connecting to server");
 
             if (PhotonNetwork.IsConnected)
                 PhotonNetwork.JoinRandomRoom();
@@ -53,7 +53,7 @@ namespace Com.Jervw.Crimson
 
         public override void OnJoinRandomFailed(short returnCode, string message)
         {
-            Debug.Log("No existing rooms, creating a new room");
+            //Debug.Log("No existing rooms, creating a new room");
             PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = maxPlayersPerRoom });
         }
 
@@ -61,7 +61,7 @@ namespace Com.Jervw.Crimson
         {
             if (!PhotonNetwork.OfflineMode)
             {
-                Debug.Log("Connected to master");
+                //Debug.Log("Connected to master");
                 PhotonNetwork.JoinRandomRoom();
             }
 
@@ -74,7 +74,7 @@ namespace Com.Jervw.Crimson
 
         public override void OnJoinedRoom()
         {
-            Debug.Log("Joined room");
+            //Debug.Log("Joined room");
             if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
                 PhotonNetwork.LoadLevel(1);
 

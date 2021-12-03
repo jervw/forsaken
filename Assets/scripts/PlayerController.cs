@@ -41,7 +41,7 @@ namespace Com.Jervw.Crimson
 
         private Rigidbody2D rb2d;
         private Vector2 movementInput;
-        private Camera mainCam;
+        private Camera cam;
 
         private int weaponCurrentAmmo;
         private bool currentlyReloading, mouseShooting, canShoot;
@@ -54,7 +54,7 @@ namespace Com.Jervw.Crimson
 
         void Start()
         {
-            mainCam = Camera.main;
+            cam = Camera.main;
             weaponCurrentAmmo = weaponMaxAmmo;
             canShoot = true;
 
@@ -62,6 +62,9 @@ namespace Com.Jervw.Crimson
 
         void Update()
         {
+
+            if (!photonView.IsMine) return;
+
 
             if (Input.GetMouseButton(0) && canShoot && AmmoCheck())
             {
@@ -77,43 +80,37 @@ namespace Com.Jervw.Crimson
             {
                 canShoot = false;
                 StartCoroutine(WeaponReload());
-
             }
         }
 
         void FixedUpdate()
         {
-            if (photonView.IsMine)
+            if (!photonView.IsMine) return;
+
+            movementInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+            // Get mouse pos and translate to world point.
+            var mouseScreenPosition = Input.mousePosition;
+            var mouseWorldPostition = cam.ScreenToWorldPoint(mouseScreenPosition);
+
+            // Apply rotation to gameobject according ange of mouse position.
+            var targetDirection = mouseWorldPostition - upperBody.transform.position;
+            var upperBodyAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
+            upperBody.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, upperBodyAngle));
+
+
+            if (movementInput != Vector2.zero)
             {
-                movementInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-
-                // Get mouse pos and translate to world point.
-                var mouseScreenPosition = Input.mousePosition;
-                var mouseWorldPostition = mainCam.ScreenToWorldPoint(mouseScreenPosition);
-
-
-
-                // Apply rotation to gameobject according ange of mouse position.
-                var targetDirection = mouseWorldPostition - upperBody.transform.position;
-                var upperBodyAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
-                upperBody.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, upperBodyAngle));
-
-
-                if (movementInput != Vector2.zero)
-                {
-                    var lowerBodyangle = Mathf.Atan2(movementInput.y, movementInput.x) * Mathf.Rad2Deg;
-                    Quaternion rotation = Quaternion.Euler(new Vector3(0f, 0f, lowerBodyangle));
-                    lowerBody.transform.rotation = rotation;
-                }
-
-                // Movement using velocity
-                Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0);
-                rb2d.velocity = new Vector3(movementInput.x * movementSpeed, movementInput.y * movementSpeed, 0f);
+                var lowerBodyangle = Mathf.Atan2(movementInput.y, movementInput.x) * Mathf.Rad2Deg;
+                Quaternion rotation = Quaternion.Euler(new Vector3(0f, 0f, lowerBodyangle));
+                lowerBody.transform.rotation = rotation;
             }
 
+            // Movement using velocity
+            Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0);
+            rb2d.velocity = new Vector3(movementInput.x * movementSpeed, movementInput.y * movementSpeed, 0f);
+
         }
-
-
 
         bool AmmoCheck()
         {

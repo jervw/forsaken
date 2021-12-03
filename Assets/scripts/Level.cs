@@ -39,6 +39,7 @@ public class Level : MonoBehaviour
         initialized = true;
     }
 
+
     public int GetEnemyCount() { return enemyCount; }
 
     public Vector2 GetSize() { return minBounds; }

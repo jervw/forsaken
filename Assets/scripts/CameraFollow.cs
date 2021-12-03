@@ -1,43 +1,59 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class CameraFollow : MonoBehaviour
+namespace Com.Jervw.Crimson
 {
-    [SerializeField]
-    public float smoothSpeed = 0.125f;
-
-    [SerializeField]
-    public Vector3 cameraOffset;
-
-    public SpriteRenderer groundSprite;
-
-    private Transform target;
-    private Camera cam;
-    private Vector3 minBounds, maxBounds;
-    private float halfHeight, halfWidth;
-
-    void Start()
+    public class CameraFollow : MonoBehaviourPunCallbacks
     {
-        cam = GetComponent<Camera>();
+        [SerializeField]
+        public float smoothSpeed = 0.125f;
 
-        target = GameObject.FindWithTag("Player").transform;
+        [SerializeField]
+        public Vector3 cameraOffset;
 
-        minBounds = groundSprite.bounds.min;
-        maxBounds = groundSprite.bounds.max;
-        halfHeight = cam.orthographicSize;
-        halfWidth = halfHeight * Screen.width / Screen.height;
+        [SerializeField]
+        SpriteRenderer groundSprite;
 
-    }
+        [SerializeField]
+        Transform target;
 
-    void LateUpdate()
-    {
-        if (target != null)
+        [SerializeField]
+        Vector3 minBounds, maxBounds;
+
+        [SerializeField]
+        float halfHeight, halfWidth;
+
+        Camera cam;
+
+
+        void Start()
         {
-            transform.position = target.position + cameraOffset;
-            float clampedX = Mathf.Clamp(transform.position.x, minBounds.x + halfWidth, maxBounds.x - halfWidth);
-            float clampedY = Mathf.Clamp(transform.position.y, minBounds.y + halfHeight, maxBounds.y - halfHeight);
-            transform.position = new Vector3(clampedX, clampedY, transform.position.z);
+            if (photonView.IsMine)
+            {
+                cam = Camera.main;
+                groundSprite = GameObject.Find("Ground").GetComponent<SpriteRenderer>();
+
+                minBounds = groundSprite.bounds.min;
+                maxBounds = groundSprite.bounds.max;
+                halfHeight = cam.orthographicSize;
+                halfWidth = halfHeight * Screen.width / Screen.height;
+            }
+        }
+
+        void LateUpdate()
+        {
+            if (photonView.IsMine)
+            {
+                Vector3 desiredPosition = transform.position + cameraOffset;
+                Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+                cam.transform.position = smoothedPosition;
+
+                cam.transform.position = new Vector3(
+                    Mathf.Clamp(cam.transform.position.x, minBounds.x + halfWidth, maxBounds.x - halfWidth),
+                    Mathf.Clamp(cam.transform.position.y, minBounds.y + halfHeight, maxBounds.y - halfHeight),
+                    cam.transform.position.z
+                );
+            }
         }
     }
 }
