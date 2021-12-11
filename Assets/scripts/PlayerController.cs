@@ -39,12 +39,12 @@ namespace Com.Jervw.Crimson
         [SerializeField]
         Transform lowerBody;
 
-        private Rigidbody2D rb2d;
-        private Vector2 movementInput;
-        private Camera cam;
+        Rigidbody2D rb2d;
+        Vector2 movementInput;
+        Camera cam;
 
-        private int weaponCurrentAmmo;
-        private bool currentlyReloading, mouseShooting, canShoot;
+        int weaponCurrentAmmo;
+        bool currentlyReloading, mouseShooting, canShoot;
 
         void Awake()
         {
@@ -91,7 +91,9 @@ namespace Com.Jervw.Crimson
                 lowerBody.transform.rotation = rotation;
             }
 
-            transform.Translate(movementInput * movementSpeed * Time.deltaTime);
+
+
+            transform.Translate(movementInput.normalized * movementSpeed * Time.deltaTime);
 
 
             if (Input.GetMouseButton(0) && canShoot && AmmoCheck())
@@ -109,11 +111,6 @@ namespace Com.Jervw.Crimson
                 StartCoroutine(WeaponReload());
             }
 
-
-            // Movement using velocity
-            //Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0);
-            //rb2d.velocity = new Vector3(movementInput.x * movementSpeed, movementInput.y * movementSpeed, 0f);
-
         }
 
         bool AmmoCheck()
@@ -123,9 +120,7 @@ namespace Com.Jervw.Crimson
 
         IEnumerator WeaponReload()
         {
-            Debug.Log("RELOADING");
             yield return new WaitForSeconds(weaponReloadSpeed);
-            Debug.Log("DONE");
             weaponCurrentAmmo = weaponMaxAmmo;
             canShoot = true;
         }

@@ -880,7 +880,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8395190f76b5dfd4d84eb0cb5bec8ecb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 5
+  enemyCount: 50
   ground: {fileID: 79296640}
 --- !u!4 &1302685306
 Transform:

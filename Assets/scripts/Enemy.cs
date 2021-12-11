@@ -1,8 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+
+using Photon.Pun;
+using Photon.Realtime;
+
+public class Enemy : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     float chaseSpeed;
@@ -19,24 +21,9 @@ public class Enemy : MonoBehaviour
         target = ClosestTarget();
     }
 
-    Transform ClosestTarget()
-    {
-        GameObject[] targets = GameObject.FindGameObjectsWithTag("Player");
-        Transform bestTarget = null;
-        float closestDistance = Mathf.Infinity;
-        foreach (var target in targets)
-        {
-            float distance = Vector3.Distance(transform.position, target.transform.position);
-            if (distance < closestDistance)
-            {
-                closestDistance = distance;
-                bestTarget = target.transform;
-            }
-        }
-        return bestTarget;
-    }
 
-    void Update()
+
+    void FixedUpdate()
     {
         if (target != null)
         {
@@ -54,10 +41,33 @@ public class Enemy : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    Transform ClosestTarget()
+    {
+        GameObject[] targets = GameObject.FindGameObjectsWithTag("Player");
+        Transform bestTarget = null;
+        float closestDistance = Mathf.Infinity;
+        foreach (var target in targets)
+        {
+            float distance = Vector3.Distance(transform.position, target.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                bestTarget = target.transform;
+            }
+
+            Physics2D.IgnoreCollision(target.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+        }
+        return bestTarget;
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Bullet")
+        {
             currentHp -= 5;
+            Destroy(other.gameObject);
+        }
+
         else if (other.tag == "Player")
             Debug.Log(gameObject.name + " collided with player");
     }

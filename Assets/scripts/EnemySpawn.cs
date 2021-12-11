@@ -1,22 +1,45 @@
 using UnityEngine;
 
-public class EnemySpawn : MonoBehaviour
+using Photon.Pun;
+using Photon.Realtime;
+
+namespace Com.Jervw.Crimson
 {
-    public GameObject enemy;
-
-    // Start is called before the first frame update
-    void Start()
+    public class EnemySpawn : MonoBehaviourPunCallbacks
     {
-        Level levelDetails = GameObject.Find("Level").GetComponent<Level>();
-        Vector2 size = levelDetails.GetSize();
+        public GameObject enemy;
+        Level levelDetails;
+
+        int enemiesSpawned;
+        float enemySpawnDelay = 3f;
+        float enemySpawnRate = 3f;
 
 
-        // Spawn enemies
-        for (int i = 0; i < levelDetails.GetEnemyCount(); i++)
+        void Awake()
         {
-            GameObject e = Instantiate(enemy, levelDetails.GetRandomPosition(), Quaternion.identity) as GameObject;
+            levelDetails = GameObject.Find("Level").GetComponent<Level>();
         }
 
-    }
+        void Start()
+        {
+            InvokeRepeating("Spawn", enemySpawnDelay, enemySpawnRate);
+        }
 
+        // Update is called once per frame
+        void Update()
+        {
+        }
+
+        void Spawn()
+        {
+            if (enemiesSpawned <= levelDetails.GetEnemyCount())
+            {
+                Debug.Log("Spawning Enemy");
+                PhotonNetwork.Instantiate(enemy.name, levelDetails.GetRandomPosition(), Quaternion.identity);
+                enemiesSpawned++;
+            }
+            else
+                CancelInvoke();
+        }
+    }
 }
