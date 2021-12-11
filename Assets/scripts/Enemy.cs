@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -12,11 +11,15 @@ public class Enemy : MonoBehaviourPunCallbacks
     [SerializeField]
     public int maxHp;
 
+
+    Animator animator;
+
     Transform target;
     int currentHp;
 
     void Start()
     {
+        animator = GetComponent<Animator>();
         currentHp = maxHp;
         target = ClosestTarget();
     }
@@ -34,7 +37,12 @@ public class Enemy : MonoBehaviourPunCallbacks
 
             // Chase player
             if (distance > 1)
+            {
+                animator.SetBool("isMoving", true);
                 transform.Translate(new Vector2(chaseSpeed * Time.deltaTime, 0));
+            }
+            else
+                animator.SetBool("isMoving", false);
         }
 
         if (currentHp <= 0)
