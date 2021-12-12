@@ -7,10 +7,10 @@ namespace Com.Jervw.Crimson
 {
     public class EnemySpawn : MonoBehaviourPunCallbacks
     {
-        public GameObject enemy;
         Level levelDetails;
 
         int enemiesSpawned;
+
         float enemySpawnDelay = 3f;
         float enemySpawnRate = 3f;
 
@@ -22,24 +22,24 @@ namespace Com.Jervw.Crimson
 
         void Start()
         {
-            InvokeRepeating("Spawn", enemySpawnDelay, enemySpawnRate);
+            Invoke("Interval", enemySpawnDelay);
         }
 
-        // Update is called once per frame
-        void Update()
+        void Interval()
         {
-        }
+            enemySpawnRate -= .03f;
 
-        void Spawn()
-        {
-            if (enemiesSpawned <= levelDetails.GetEnemyCount())
+            if (enemiesSpawned <= levelDetails.enemyCount)
             {
-                Debug.Log("Spawning Enemy");
-                PhotonNetwork.Instantiate(enemy.name, levelDetails.GetRandomPosition(), Quaternion.identity);
-                enemiesSpawned++;
+                SpawnEnemy();
+                Invoke("Interval", enemySpawnRate);
             }
-            else
-                CancelInvoke();
+        }
+
+        void SpawnEnemy()
+        {
+            PhotonNetwork.Instantiate("Zombie", levelDetails.GetRandomPosition(), Quaternion.identity);
+            enemiesSpawned++;
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 using Photon.Pun;
@@ -16,6 +17,7 @@ public class Enemy : MonoBehaviourPunCallbacks
 
     Transform target;
     int currentHp;
+    bool attacking;
 
     void Start()
     {
@@ -24,10 +26,10 @@ public class Enemy : MonoBehaviourPunCallbacks
         target = ClosestTarget();
     }
 
-
-
     void FixedUpdate()
     {
+
+
         if (target != null)
         {
             float distance = (target.position - transform.position).magnitude;
@@ -36,14 +38,22 @@ public class Enemy : MonoBehaviourPunCallbacks
             transform.right = target.position - transform.position;
 
             // Chase player
-            if (distance > 1)
+            if (!attacking && distance > 1f)
             {
                 animator.SetBool("isMoving", true);
+                animator.SetBool("isAttacking", false);
                 transform.Translate(new Vector2(chaseSpeed * Time.deltaTime, 0));
             }
             else
-                animator.SetBool("isMoving", false);
+            {
+                animator.SetBool("isAttacking", true);
+                Debug.Log("Attacking");
+            }
         }
+        else
+            target = ClosestTarget();
+
+
 
         if (currentHp <= 0)
             Destroy(gameObject);
@@ -68,6 +78,7 @@ public class Enemy : MonoBehaviourPunCallbacks
         return bestTarget;
     }
 
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Bullet")
@@ -77,6 +88,22 @@ public class Enemy : MonoBehaviourPunCallbacks
         }
 
         else if (other.tag == "Player")
-            Debug.Log(gameObject.name + " collided with player");
+            if (!attacking)
+                attacking = true;
+
     }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.tag == "Player")
+            attacking = false;
+    }
+
+    IEnumerator DealDamage()
+    {
+
+        yield return new WaitForSeconds(1);
+    }
+
+
 }
