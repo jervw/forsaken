@@ -40,6 +40,8 @@ namespace Com.Jervw.Crimson
         Transform lowerBody;
 
         Rigidbody2D rb2d;
+        Animator animator;
+        Vector3 spread;
         Vector2 movementInput;
         Camera cam;
 
@@ -48,6 +50,7 @@ namespace Com.Jervw.Crimson
 
         void Awake()
         {
+            animator = GetComponent<Animator>();
             rb2d = GetComponent<Rigidbody2D>();
 
         }
@@ -91,7 +94,12 @@ namespace Com.Jervw.Crimson
                 lowerBody.transform.rotation = rotation;
             }
 
+            // Handle movement animation.
+            animator.SetFloat("isMoving", movementInput.magnitude);
 
+
+            float movement = movementInput.magnitude;
+            Debug.Log(movement);
 
             transform.Translate(movementInput.normalized * movementSpeed * Time.deltaTime);
 
@@ -99,15 +107,17 @@ namespace Com.Jervw.Crimson
             if (Input.GetMouseButton(0) && canShoot && AmmoCheck())
             {
                 canShoot = false;
-                var spread = new Vector3(0, 0, Random.Range(0, 10));
+                spread = new Vector3(0, 0, Random.Range(0, 10));
                 var p = PhotonNetwork.Instantiate("Bullet", firePosition.position, Quaternion.Euler(upperBody.transform.rotation.eulerAngles - spread));
                 p.GetComponent<Rigidbody2D>().AddForce(p.transform.right * bulletSpeed, ForceMode2D.Impulse);
                 weaponCurrentAmmo--;
+                animator.SetTrigger("shoot");
                 StartCoroutine(ShootDelay());
             }
             else if (!AmmoCheck() && canShoot)
             {
                 canShoot = false;
+                animator.SetTrigger("reload");
                 StartCoroutine(WeaponReload());
             }
 
