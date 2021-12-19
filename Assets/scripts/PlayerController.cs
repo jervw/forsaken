@@ -99,7 +99,6 @@ namespace Com.Jervw.Crimson
 
 
             float movement = movementInput.magnitude;
-            Debug.Log(movement);
 
             transform.Translate(movementInput.normalized * movementSpeed * Time.deltaTime);
 

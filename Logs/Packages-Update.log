@@ -91,3 +91,11 @@ The following packages were updated:
   com.unity.ide.visualstudio from version 2.0.11 to 2.0.12
   com.unity.render-pipelines.universal from version 12.1.1 to 12.1.2
   com.unity.shadergraph from version 12.1.1 to 12.1.2
+
+=== Sat Dec 18 07:18:43 2021
+
+Packages were changed.
+Update Mode: updateDependencies
+
+The following packages were updated:
+  com.unity.timeline from version 1.6.2 to 1.6.3

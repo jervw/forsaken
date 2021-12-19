@@ -56,7 +56,11 @@ public class Enemy : MonoBehaviourPunCallbacks
 
 
         if (currentHp <= 0)
+        {
+            //animator.SetBool("isDead", true);
             Destroy(gameObject);
+            LevelData.enemyDeathCount++;
+        }
     }
 
     Transform ClosestTarget()

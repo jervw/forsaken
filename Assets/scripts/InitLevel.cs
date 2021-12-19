@@ -1,26 +1,24 @@
 using UnityEngine;
 
-public class Level : MonoBehaviour
+public class InitLevel : MonoBehaviour
 {
-    public int enemyCount;
     public GameObject ground;
 
+    EdgeCollider2D edgeCol;
+    SpriteRenderer groundSprite;
 
     Vector2 minBounds, maxBounds;
     bool initialized = false;
 
-    void Start()
+    void Awake()
     {
-        InitLevel();
+        edgeCol = GetComponentInChildren<EdgeCollider2D>();
+        groundSprite = ground.GetComponent<SpriteRenderer>();
+        Init();
     }
 
-    void InitLevel()
+    void Init()
     {
-        if (initialized) return;
-
-        var edgeCol = GetComponentInChildren<EdgeCollider2D>();
-        var groundSprite = ground.GetComponent<SpriteRenderer>();
-
         minBounds = groundSprite.bounds.min;
         maxBounds = groundSprite.bounds.max;
 
@@ -36,19 +34,7 @@ public class Level : MonoBehaviour
         points.SetValue(botRightCorner, 3);
         points.SetValue(botLeftCorner, 4);
         edgeCol.points = points;
-        initialized = true;
+
+        LevelData.SetBounds(minBounds, maxBounds);
     }
-
-
-    public Vector2 GetSize() { return minBounds; }
-
-
-    public Vector2 GetRandomPosition()
-    {
-        InitLevel();
-        float x = Random.Range(minBounds.x, maxBounds.x);
-        float y = Random.Range(minBounds.y, maxBounds.y);
-        return new Vector2(x, y);
-    }
-
 }
