@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6404449433419769802}
   - component: {fileID: 2385396950247410872}
   - component: {fileID: -5854506355466784838}
-  - component: {fileID: -7966806868866215900}
+  - component: {fileID: 2048996975185542170}
   m_Layer: 6
   m_Name: Bullet
   m_TagString: Bullet
@@ -102,6 +102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileLifetime: 5
+  projectileSpeed: 100
 --- !u!50 &6404449433419769802
 Rigidbody2D:
   serializedVersion: 4
@@ -168,11 +169,11 @@ MonoBehaviour:
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
-  - {fileID: -7966806868866215900}
+  - {fileID: 2048996975185542170}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &-7966806868866215900
+--- !u!114 &2048996975185542170
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -181,10 +182,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7508169355806454402}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e7cb724808c322458aa4d15f5035fa9, type: 3}
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_SynchronizeVelocity: 1
-  m_SynchronizeAngularVelocity: 0
-  m_TeleportEnabled: 0
-  m_TeleportIfDistanceGreaterThan: 3
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1

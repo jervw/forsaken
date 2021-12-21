@@ -3,14 +3,23 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float projectileLifetime = 5f;
+    [SerializeField]
+    float projectileLifetime = 5f;
 
-    private void Start()
+    [SerializeField]
+    float projectileSpeed = 70f;
+
+    void Start()
     {
-        StartCoroutine(WaitAndDestroy(projectileLifetime));
+        //StartCoroutine(WaitAndDestroy(projectileLifetime));
     }
 
-    private IEnumerator WaitAndDestroy(float waitTime)
+    void Update()
+    {
+        transform.Translate(Vector3.right * projectileSpeed * Time.deltaTime);
+    }
+
+    IEnumerator WaitAndDestroy(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
         Destroy(gameObject);

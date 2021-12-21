@@ -1,6 +1,7 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class InitLevel : MonoBehaviour
+public class InitLevel : MonoBehaviourPunCallbacks
 {
     public GameObject ground;
 
@@ -36,5 +37,7 @@ public class InitLevel : MonoBehaviour
         edgeCol.points = points;
 
         LevelData.SetBounds(minBounds, maxBounds);
+
+        PhotonNetwork.InstantiateRoomObject("EnemySpawner", Vector3.zero, Quaternion.identity);
     }
 }

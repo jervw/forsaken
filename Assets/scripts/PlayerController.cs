@@ -46,13 +46,12 @@ namespace Com.Jervw.Crimson
         Camera cam;
 
         int weaponCurrentAmmo;
-        bool currentlyReloading, mouseShooting, canShoot;
+        bool reloading, mouseShooting, canShoot;
 
         void Awake()
         {
             animator = GetComponent<Animator>();
             rb2d = GetComponent<Rigidbody2D>();
-
         }
 
         void Start()
@@ -63,25 +62,18 @@ namespace Com.Jervw.Crimson
 
         }
 
-        void Update()
-        {
-
-
-
-
-        }
-
         void FixedUpdate()
         {
             if (!photonView.IsMine) return;
 
             movementInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-            // Get mouse pos and translate to world point.
+
+
+            // Apply rotation to gameobject according ange of mouse position.
             var mouseScreenPosition = Input.mousePosition;
             var mouseWorldPostition = cam.ScreenToWorldPoint(mouseScreenPosition);
 
-            // Apply rotation to gameobject according ange of mouse position.
             var targetDirection = mouseWorldPostition - upperBody.transform.position;
             var upperBodyAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
             upperBody.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, upperBodyAngle));
@@ -94,21 +86,20 @@ namespace Com.Jervw.Crimson
                 lowerBody.transform.rotation = rotation;
             }
 
-            // Handle movement animation.
+
+            // movement
+            float movement = movementInput.magnitude;
+            transform.Translate(movementInput.normalized * movementSpeed * Time.deltaTime);
             animator.SetFloat("isMoving", movementInput.magnitude);
 
 
-            float movement = movementInput.magnitude;
-
-            transform.Translate(movementInput.normalized * movementSpeed * Time.deltaTime);
-
-
+            // shooting
             if (Input.GetMouseButton(0) && canShoot && AmmoCheck())
             {
                 canShoot = false;
                 spread = new Vector3(0, 0, Random.Range(0, 10));
                 var p = PhotonNetwork.Instantiate("Bullet", firePosition.position, Quaternion.Euler(upperBody.transform.rotation.eulerAngles - spread));
-                p.GetComponent<Rigidbody2D>().AddForce(p.transform.right * bulletSpeed, ForceMode2D.Impulse);
+                //p.GetComponent<Rigidbody2D>().AddForce(p.transform.right * bulletSpeed, ForceMode2D.Impulse);
                 weaponCurrentAmmo--;
                 animator.SetTrigger("shoot");
                 StartCoroutine(ShootDelay());
@@ -120,7 +111,9 @@ namespace Com.Jervw.Crimson
                 StartCoroutine(WeaponReload());
             }
 
+
         }
+
 
         bool AmmoCheck()
         {
