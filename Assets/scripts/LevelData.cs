@@ -5,6 +5,7 @@ using UnityEngine;
 public static class LevelData
 {
     public static Vector2 minBounds, maxBounds;
+    public static int pickupCountMax = 5;
     public static int enemyCountMax = 20;
     public static int enemyCount = 0;
     public static int enemyDeathCount = 0;

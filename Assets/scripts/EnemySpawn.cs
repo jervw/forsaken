@@ -17,7 +17,6 @@ namespace Com.Jervw.Crimson
 
         void Interval()
         {
-            Debug.Log("Spawning at " + photonView.Owner.NickName);
             spawnRate -= .03f;
 
             if (LevelData.enemyCount <= LevelData.enemyCountMax)
