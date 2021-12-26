@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Com.Jervw.Crimson;
 
 using Photon.Pun;
 using Photon.Realtime;
@@ -12,12 +13,14 @@ public class Enemy : MonoBehaviourPunCallbacks
     [SerializeField]
     public int maxHp;
 
-
     Animator animator;
 
     Transform target;
     int currentHp;
     bool attacking;
+
+    float nextAttackTime = 0f;
+    float attackRate = 1f;
 
     void Start()
     {
@@ -42,12 +45,17 @@ public class Enemy : MonoBehaviourPunCallbacks
             {
                 animator.SetBool("isMoving", true);
                 animator.SetBool("isAttacking", false);
+                CancelInvoke("Attack");
                 transform.Translate(new Vector2(chaseSpeed * Time.deltaTime, 0));
             }
             else
             {
                 animator.SetBool("isAttacking", true);
-                Debug.Log("Attacking");
+                if (Time.time > nextAttackTime)
+                {
+                    nextAttackTime = Time.time + attackRate;
+                    target.gameObject.GetComponent<PlayerController>().TakeDamage(1);
+                }
             }
         }
         else
@@ -56,11 +64,18 @@ public class Enemy : MonoBehaviourPunCallbacks
 
 
         if (currentHp <= 0)
-        {
-            //animator.SetBool("isDead", true);
-            Destroy(gameObject);
-            LevelData.enemyDeathCount++;
-        }
+            OnDeath();
+
+    }
+
+    public void OnDeath()
+    {
+        if (Random.value <= LevelData.pickupChance)
+            PhotonNetwork.Instantiate("Pickup", transform.position, Quaternion.identity);
+
+        //animator.SetBool("isDead", true);
+        Destroy(gameObject);
+        LevelData.enemyDeathCount++;
     }
 
     Transform ClosestTarget()
@@ -102,12 +117,4 @@ public class Enemy : MonoBehaviourPunCallbacks
         if (other.tag == "Player")
             attacking = false;
     }
-
-    IEnumerator DealDamage()
-    {
-
-        yield return new WaitForSeconds(1);
-    }
-
-
 }

@@ -9,43 +9,19 @@ namespace Com.Jervw.Crimson
 {
     public class PlayerController : MonoBehaviourPun
     {
-        [SerializeField]
-        float movementSpeed;
+        public Transform firePosition, upperBody, lowerBody;
+        public GameObject projectile;
 
-        [SerializeField]
-        int weaponMaxAmmo;
+        [SerializeField] float movementSpeed, weaponReloadSpeed;
+        [SerializeField] float bulletSpeed, bulletSpread, fireDelay;
+        [SerializeField] int weaponMaxAmmo;
 
-        [SerializeField]
-        float bulletSpeed;
-
-        [SerializeField]
-        float weaponReloadSpeed;
-
-        [SerializeField]
-        float bulletSpread;
-
-        [SerializeField]
-        float fireDelay;
-
-        [SerializeField]
-        Transform firePosition;
-
-        [SerializeField]
-        GameObject projectile;
-
-        [SerializeField]
-        Transform upperBody;
-
-        [SerializeField]
-        Transform lowerBody;
-
+        Camera cam;
         Rigidbody2D rb2d;
         Animator animator;
         Vector3 spread;
         Vector2 movementInput;
-        Camera cam;
-
-        int weaponCurrentAmmo;
+        int health, weaponCurrentAmmo;
         bool reloading, mouseShooting, canShoot;
 
         void Awake()
@@ -133,5 +109,20 @@ namespace Com.Jervw.Crimson
             canShoot = true;
         }
 
+        public void TakeDamage(int damage)
+        {
+            photonView.RPC("TakeDamageRPC", RpcTarget.All, damage);
+        }
+
+        [PunRPC]
+        void TakeDamageRPC(int damage)
+        {
+            Debug.Log("Player took damage" + damage);
+        }
+
+        public int GetHealth()
+        {
+            return health;
+        }
     }
 }

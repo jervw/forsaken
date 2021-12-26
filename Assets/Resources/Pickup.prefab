@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6576339777084581239}
   - component: {fileID: 7106671831873789840}
   - component: {fileID: 279552040635124166}
+  - component: {fileID: -6049049585267627101}
   m_Layer: 0
   m_Name: Pickup
   m_TagString: Untagged
@@ -47,6 +48,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ddb1738f7aacbf36aecc3e95640a0d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickups:
+  - {fileID: 11400000, guid: 41de37a3bfc26b3b0a2be34e13f7a8c9, type: 2}
+  - {fileID: 11400000, guid: 0c35733d2f1094581a6fe012f5de190f, type: 2}
+  - {fileID: 11400000, guid: 11fdf7d1fa4c8774a812a55b40313342, type: 2}
+  - {fileID: 11400000, guid: db6c5cacbfb942b1ab081a567f03f0fd, type: 2}
 --- !u!212 &6576339777084581239
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -88,15 +94,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 198e10c4e1e956546954e310e2241c68, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.256, y: 0.256}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &7106671831873789840
@@ -138,3 +144,19 @@ MonoBehaviour:
   m_SynchronizeRotation: 0
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!58 &-6049049585267627101
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 295888257889449665}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.15

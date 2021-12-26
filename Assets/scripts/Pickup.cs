@@ -2,17 +2,58 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pickup : MonoBehaviour
+using Photon.Pun;
+
+public class Pickup : MonoBehaviourPunCallbacks
 {
+    public PickupScriptable[] pickups;
+
     SpriteRenderer spriteRenderer;
-    int effectValue;
+
+    GameObject effect;
+    bool consumeOnPickup;
     float effectDuration;
 
-    public void LoadData(PickupScriptable pickup)
+    void Awake()
     {
-        this.name = pickup.name;
-        GetComponent<SpriteRenderer>().sprite = pickup.icon;
-        effectValue = pickup.effectValue;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        int r = Random.Range(0, pickups.Length);
+        SetType(pickups[r]);
+    }
+
+    void SetType(PickupScriptable pickup)
+    {
+        gameObject.name = pickup.name;
+        spriteRenderer.sprite = pickup.icon;
+        effect = pickup.effect;
+        consumeOnPickup = pickup.consumeOnPickup;
         effectDuration = pickup.effectDuration;
     }
+
+    void Activate(GameObject player)
+    {
+        if (effect == null) return;
+
+        if (consumeOnPickup)
+        {
+            Instantiate(effect, transform.position, Quaternion.identity, player.transform);
+        }
+
+
+        PhotonNetwork.Instantiate(effect.name, transform.position, Quaternion.identity);
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("Pickup: " + this.name);
+
+        if (other.CompareTag("Player"))
+        {
+            Activate(other.gameObject);
+            Destroy(this.gameObject);
+        }
+
+
+    }
+
 }

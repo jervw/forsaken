@@ -9,6 +9,7 @@ public static class LevelData
     public static int enemyCountMax = 20;
     public static int enemyCount = 0;
     public static int enemyDeathCount = 0;
+    public static float pickupChance = 0.5f;
     public static float enemySpawnDelay = 3f;
     public static float enemySpawnRate = 3f;
     public static float enemyIncreaseRate = 0.1f;
