@@ -1,28 +1,23 @@
 using System.Collections;
 using UnityEngine;
+using Photon.Pun;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviourPun
 {
-    [SerializeField]
-    float projectileLifetime = 5f;
+    [SerializeField] private float projectileSpeed, projectileDamage;
 
-    [SerializeField]
-    float projectileSpeed = 70f;
+    static float lifetime = 5f;
 
     void Start()
     {
-        //StartCoroutine(WaitAndDestroy(projectileLifetime));
+        Destroy(gameObject, lifetime);
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        transform.Translate(Vector3.right * projectileSpeed * Time.deltaTime);
+        transform.Translate(Vector3.right * projectileSpeed * Time.fixedDeltaTime);
     }
 
-    IEnumerator WaitAndDestroy(float waitTime)
-    {
-        yield return new WaitForSeconds(waitTime);
-        Destroy(gameObject);
-    }
+    public float GetDamage() { return projectileDamage; }
 }
 

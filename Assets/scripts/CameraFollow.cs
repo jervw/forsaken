@@ -5,55 +5,38 @@ namespace Com.Jervw.Crimson
 {
     public class CameraFollow : MonoBehaviourPunCallbacks
     {
-        [SerializeField]
-        public float smoothSpeed = 0.125f;
+        const float SMOOTH_AMOUNT = 0.125f;
 
-        [SerializeField]
-        public Vector3 cameraOffset;
-
-        [SerializeField]
-        SpriteRenderer groundSprite;
-
-        [SerializeField]
-        Transform target;
-
-        [SerializeField]
-        Vector3 minBounds, maxBounds;
-
-        [SerializeField]
-        float halfHeight, halfWidth;
+        [SerializeField] private Vector3 cameraOffset;
 
         Camera cam;
-
+        Vector3 minBounds, maxBounds;
+        float halfHeight, halfWidth;
 
         void Start()
         {
-            if (photonView.IsMine)
-            {
-                cam = Camera.main;
-                groundSprite = GameObject.Find("Ground").GetComponent<SpriteRenderer>();
+            if (!photonView.IsMine) return;
 
-                minBounds = groundSprite.bounds.min;
-                maxBounds = groundSprite.bounds.max;
-                halfHeight = cam.orthographicSize;
-                halfWidth = halfHeight * Screen.width / Screen.height;
-            }
+            cam = Camera.main;
+            minBounds = LevelData.minBounds;
+            maxBounds = LevelData.maxBounds;
+            halfHeight = cam.orthographicSize;
+            halfWidth = halfHeight * Screen.width / Screen.height;
         }
 
         void LateUpdate()
         {
-            if (photonView.IsMine)
-            {
-                Vector3 desiredPosition = transform.position + cameraOffset;
-                Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-                cam.transform.position = smoothedPosition;
+            if (!photonView.IsMine) return;
 
-                cam.transform.position = new Vector3(
-                    Mathf.Clamp(cam.transform.position.x, minBounds.x + halfWidth, maxBounds.x - halfWidth),
-                    Mathf.Clamp(cam.transform.position.y, minBounds.y + halfHeight, maxBounds.y - halfHeight),
-                    cam.transform.position.z
-                );
-            }
+            var desiredPosition = transform.position + cameraOffset;
+            var smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, SMOOTH_AMOUNT);
+            cam.transform.position = smoothedPosition;
+
+            cam.transform.position = new Vector3(
+                Mathf.Clamp(cam.transform.position.x, minBounds.x + halfWidth, maxBounds.x - halfWidth),
+                Mathf.Clamp(cam.transform.position.y, minBounds.y + halfHeight, maxBounds.y - halfHeight),
+                cam.transform.position.z
+            );
         }
     }
 }

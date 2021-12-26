@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f897dc5f4e8cfaaef9097ad488497533, type: 3}
+  m_Name: BulletHellPickup
+  m_EditorClassIdentifier: 
+  name: Bullet Hell
+  icon: {fileID: 21300000, guid: 6f35659064b4055469a7951c9ff04759, type: 3}
+  effect: {fileID: 0}
+  consumeOnPickup: 0
+  effectDuration: 20

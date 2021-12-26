@@ -97,6 +97,16 @@ public class Enemy : MonoBehaviourPunCallbacks
         return bestTarget;
     }
 
+    public IEnumerator FreezeEnemy(float time)
+    {
+        float tmp = chaseSpeed;
+        chaseSpeed = 0;
+        //animator.SetBool("isFrozen", true);
+        yield return new WaitForSeconds(time);
+        //animator.SetBool("isFrozen", false);
+        chaseSpeed = tmp;
+    }
+
 
     void OnTriggerEnter2D(Collider2D other)
     {

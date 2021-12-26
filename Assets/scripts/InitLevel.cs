@@ -9,7 +9,6 @@ public class InitLevel : MonoBehaviourPunCallbacks
     SpriteRenderer groundSprite;
 
     Vector2 minBounds, maxBounds;
-    bool initialized = false;
 
     void Awake()
     {

@@ -327,6 +327,7 @@ GameObject:
   - component: {fileID: 6685625820639829407}
   - component: {fileID: 6685625820639829404}
   - component: {fileID: 6685625820639829395}
+  - component: {fileID: -1461968185342523659}
   - component: {fileID: -5276511712392632516}
   - component: {fileID: 2930432467115004147}
   - component: {fileID: 7067527977618561249}
@@ -389,16 +390,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a09bd120da94164f9db535bc19f6312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectile: {fileID: 7508169355806454402, guid: 42d66086a84db78469aa588c0d7f80a6, type: 3}
   firePosition: {fileID: 4973835437265278185}
   upperBody: {fileID: 1366618452}
   lowerBody: {fileID: 12555938}
-  projectile: {fileID: 7508169355806454402, guid: 42d66086a84db78469aa588c0d7f80a6, type: 3}
   movementSpeed: 8
-  weaponReloadSpeed: 2
-  bulletSpeed: 60
-  bulletSpread: 0
-  fireDelay: 0.2
-  weaponMaxAmmo: 30
+  health: 0
+--- !u!114 &-1461968185342523659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6685625820639829394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4870128b998ef9b4e911508f10817220, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  firePosition: {fileID: 4973835437265278185}
+  upperBody: {fileID: 1366618452}
+  possibleWeapons:
+  - {fileID: 11400000, guid: fcdb2a34250c5d147baa1782fbe65b5a, type: 2}
+  - {fileID: 11400000, guid: 1000cfaf8c5000748ab4b7068aea4a04, type: 2}
+  - {fileID: 11400000, guid: d9339cd743903a947a880eb66f7028a6, type: 2}
 --- !u!114 &-5276511712392632516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -434,14 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2e87542e58a6494da1019075b7e722f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smoothSpeed: 0.125
   cameraOffset: {x: 0, y: 0, z: -10}
-  groundSprite: {fileID: 0}
-  target: {fileID: 0}
-  minBounds: {x: 0, y: 0, z: 0}
-  maxBounds: {x: 0, y: 0, z: 0}
-  halfHeight: 0
-  halfWidth: 0
 --- !u!114 &7067527977618561249
 MonoBehaviour:
   m_ObjectHideFlags: 0

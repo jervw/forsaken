@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f897dc5f4e8cfaaef9097ad488497533, type: 3}
   m_Name: FreezePickup
   m_EditorClassIdentifier: 
-  name: Test2
+  name: Freeze
   icon: {fileID: 21300000, guid: 372ffe3afe9479d4bb2fae88b08022de, type: 3}
-  effectValue: 10
+  effect: {fileID: 4246919935417482076, guid: 7a6f1330bc6810a47a295f72c7dd6a36, type: 3}
+  consumeOnPickup: 0
   effectDuration: 20
