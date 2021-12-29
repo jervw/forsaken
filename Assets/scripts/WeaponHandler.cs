@@ -20,20 +20,30 @@ public class WeaponHandler : MonoBehaviourPun
     void Awake()
     {
         animator = GetComponent<Animator>();
-        SetWeapon(WeaponType.Shotgun);
-
+        SetWeapon(WeaponType.Pistol);
     }
-
-
 
     public void Shoot()
     {
         if (!CanShoot()) return;
 
-        var position = firePosition.position + currentWeapon.fireOffset;
-        var spread = new Vector3(0, 0, Random.Range(0, currentWeapon.bulletSpread));
-        var rotation = Quaternion.Euler(upperBody.transform.rotation.eulerAngles - spread);
-        PhotonNetwork.Instantiate(currentWeapon.projectile.name, position, rotation);
+        Vector2 position = firePosition.position + firePosition.right * currentWeapon.fireOffset;
+
+        if (currentWeapon.ammoType == WeaponData.AmmoType.Bullet)
+        {
+            var spread = new Vector3(0, 0, Random.Range(-currentWeapon.bulletSpread, currentWeapon.bulletSpread));
+            var rotation = Quaternion.Euler(upperBody.transform.rotation.eulerAngles - spread);
+            PhotonNetwork.Instantiate(currentWeapon.projectile.name, position, rotation);
+        }
+        else if (currentWeapon.ammoType == WeaponData.AmmoType.Shell)
+        {
+            for (int i = 0; i < currentWeapon.bulletsPerShot; i++)
+            {
+                var spread = new Vector3(0, 0, Random.Range(-currentWeapon.bulletSpread, currentWeapon.bulletSpread));
+                var rotation = Quaternion.Euler(upperBody.transform.rotation.eulerAngles - spread);
+                PhotonNetwork.Instantiate(currentWeapon.projectile.name, position, rotation);
+            }
+        }
 
         animator.SetTrigger("shoot");
         currentAmmo--;
@@ -73,11 +83,12 @@ public class WeaponHandler : MonoBehaviourPun
                 currentWeapon = possibleWeapons[0];
                 animator.SetInteger("currentWeapon", 0);
                 break;
-            case WeaponType.Shotgun:
+
+            case WeaponType.Rifle:
                 currentWeapon = possibleWeapons[1];
                 animator.SetInteger("currentWeapon", 1);
                 break;
-            case WeaponType.Rifle:
+            case WeaponType.Shotgun:
                 currentWeapon = possibleWeapons[2];
                 animator.SetInteger("currentWeapon", 2);
                 break;

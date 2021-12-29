@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: Rifle
   m_EditorClassIdentifier: 
   name: Rifle
-  bulletSpread: 10
+  bulletSpread: 8
   fireDelay: 0.15
   reloadTime: 2
+  fireOffset: 3.5
   maxAmmo: 30
+  bulletsPerShot: 1
+  ammoType: 0
   projectile: {fileID: 7508169355806454402, guid: 4456b2c8565d1f448b4743877d35b8f5, type: 3}
-  fireOffset: {x: 0, y: 0, z: 0}

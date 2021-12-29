@@ -6,7 +6,7 @@ using Photon.Pun;
 
 public class Pickup : MonoBehaviourPunCallbacks
 {
-    public PickupScriptable[] pickups;
+    public PickupData[] pickups;
 
     SpriteRenderer spriteRenderer;
 
@@ -21,7 +21,7 @@ public class Pickup : MonoBehaviourPunCallbacks
         SetType(pickups[r]);
     }
 
-    void SetType(PickupScriptable pickup)
+    void SetType(PickupData pickup)
     {
         gameObject.name = pickup.name;
         spriteRenderer.sprite = pickup.icon;
@@ -33,11 +33,10 @@ public class Pickup : MonoBehaviourPunCallbacks
     void Activate(GameObject player)
     {
         if (effect == null) return;
+        Debug.Log("Activating effect: " + effect.name);
 
         if (consumeOnPickup)
-        {
             Instantiate(effect, transform.position, Quaternion.identity, player.transform);
-        }
 
 
         PhotonNetwork.Instantiate(effect.name, transform.position, Quaternion.identity);
@@ -45,15 +44,10 @@ public class Pickup : MonoBehaviourPunCallbacks
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Pickup: " + this.name);
-
         if (other.CompareTag("Player"))
         {
             Activate(other.gameObject);
             Destroy(this.gameObject);
         }
-
-
     }
-
 }

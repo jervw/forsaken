@@ -5,34 +5,32 @@ using Photon.Realtime;
 
 namespace Com.Jervw.Crimson
 {
-    public class EnemySpawn : MonoBehaviourPunCallbacks
+    public class EnemySpawn : MonoBehaviourPun
     {
         float spawnRate;
 
         void Start()
         {
-            spawnRate = LevelData.enemySpawnRate;
-            Invoke("Interval", LevelData.enemySpawnDelay);
+            if (!PhotonNetwork.IsMasterClient) return;
+            spawnRate = LevelHandler.Instance.current.enemySpawnRate;
+            Invoke("Interval", LevelHandler.Instance.current.enemySpawnDelay);
         }
 
         void Interval()
         {
-            spawnRate -= .03f;
+            spawnRate -= LevelHandler.Instance.current.enemyIncreaseRate;
 
-            if (LevelData.enemyCount <= LevelData.enemyCountMax)
+            if (LevelHandler.Instance.enemyCount <= LevelHandler.Instance.current.enemyCountMax)
             {
-                photonView.RPC("SpawnEnemy", RpcTarget.All);
+                SpawnEnemy();
                 Invoke("Interval", spawnRate);
             }
         }
 
-
-        [PunRPC]
         void SpawnEnemy()
         {
-
-            PhotonNetwork.Instantiate("Zombie", LevelData.GetRandomPosition(), Quaternion.identity);
-            LevelData.enemyCount++;
+            PhotonNetwork.Instantiate("Zombie", LevelHandler.Instance.GetRandomPos(), Quaternion.identity);
+            LevelHandler.Instance.enemyCount++;
         }
     }
 }

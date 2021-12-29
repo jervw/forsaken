@@ -12,24 +12,22 @@ namespace Com.Jervw.Crimson
 {
     public class Lobby : MonoBehaviourPunCallbacks
     {
+        public static Lobby Instance;
+        public const byte MAX_PLAYERS = 4;
 
-        public TMP_Text roomName;
-        public TMP_Text playerList;
+        public Button joinButton;
+        public TMP_Text roomName, playerList;
         public TMP_InputField roomNameInput;
 
-        const byte MAX_PLAYERS = 4;
-
-        GameObject mainView, lobbyView, roomView;
+        MainMenuState mainState;
 
         void Awake()
         {
+            mainState = GetComponent<MainMenuState>();
+            Instance = this;
             PhotonNetwork.AutomaticallySyncScene = true;
-            mainView = GameObject.Find("MainView");
-            lobbyView = GameObject.Find("LobbyView");
-            roomView = GameObject.Find("RoomView");
+            mainState.SetState(MainMenuState.MenuState.Main);
 
-            lobbyView.SetActive(false);
-            roomView.SetActive(false);
         }
 
         void UpdatePlayerList()
@@ -53,8 +51,8 @@ namespace Com.Jervw.Crimson
         public void StartLevel()
         {
             PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
+            LevelHandler.Instance.SetLevelData(0);
             PhotonNetwork.AutomaticallySyncScene = true;
-
         }
 
         public void CreateLobby()
@@ -77,16 +75,6 @@ namespace Com.Jervw.Crimson
             PhotonNetwork.ConnectUsingSettings();
         }
 
-        public override void OnJoinRandomFailed(short returnCode, string message)
-        {
-            Debug.Log(message);
-        }
-
-        public override void OnCreateRoomFailed(short returnCode, string message)
-        {
-            Debug.Log(message);
-        }
-
         public override void OnCreatedRoom()
         {
             Debug.Log("Created room: " + PhotonNetwork.CurrentRoom.Name);
@@ -97,8 +85,7 @@ namespace Com.Jervw.Crimson
             if (!PhotonNetwork.OfflineMode)
             {
                 Debug.Log("Connected to master");
-                mainView.SetActive(false);
-                lobbyView.SetActive(true);
+                mainState.SetState(MainMenuState.MenuState.Lobby);
             }
 
             else
@@ -117,24 +104,21 @@ namespace Com.Jervw.Crimson
         {
             if (PhotonNetwork.OfflineMode) StartLevel();
 
-            lobbyView.SetActive(false);
-            roomView.SetActive(true);
+            mainState.SetState(MainMenuState.MenuState.Room);
             roomName.text = PhotonNetwork.CurrentRoom.Name;
             UpdatePlayerList();
-
         }
 
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-            UpdatePlayerList();
 
+            UpdatePlayerList();
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
         {
             UpdatePlayerList();
-
         }
     }
 }

@@ -5,22 +5,18 @@ using Com.Jervw.Crimson;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class Enemy : MonoBehaviourPunCallbacks
+public class Enemy : MonoBehaviourPun
 {
-    [SerializeField]
-    float chaseSpeed;
-
-    [SerializeField]
     public int maxHp;
 
-    Animator animator;
+    [SerializeField] float chaseSpeed, attackRate, attackRange;
 
+
+    Animator animator;
     Transform target;
     int currentHp;
     bool attacking;
-
-    float nextAttackTime = 0f;
-    float attackRate = 1f;
+    float nextAttackTime;
 
     void Start()
     {
@@ -29,7 +25,7 @@ public class Enemy : MonoBehaviourPunCallbacks
         target = ClosestTarget();
     }
 
-    void FixedUpdate()
+    void Update()
     {
 
 
@@ -41,7 +37,7 @@ public class Enemy : MonoBehaviourPunCallbacks
             transform.right = target.position - transform.position;
 
             // Chase player
-            if (!attacking && distance > 1f)
+            if (!attacking && distance > attackRange)
             {
                 animator.SetBool("isMoving", true);
                 animator.SetBool("isAttacking", false);
@@ -54,6 +50,7 @@ public class Enemy : MonoBehaviourPunCallbacks
                 if (Time.time > nextAttackTime)
                 {
                     nextAttackTime = Time.time + attackRate;
+                    Debug.Log("Attacking");
                     target.gameObject.GetComponent<PlayerController>().TakeDamage(1);
                 }
             }
@@ -64,18 +61,24 @@ public class Enemy : MonoBehaviourPunCallbacks
 
 
         if (currentHp <= 0)
-            OnDeath();
-
+        {
+            photonView.RPC("OnDeath", RpcTarget.All);
+            SpawnPickup();
+        }
     }
 
+    [PunRPC]
     public void OnDeath()
     {
-        if (Random.value <= LevelData.pickupChance)
-            PhotonNetwork.Instantiate("Pickup", transform.position, Quaternion.identity);
-
         //animator.SetBool("isDead", true);
         Destroy(gameObject);
-        LevelData.enemyDeathCount++;
+        LevelHandler.Instance.enemyDeathCount++;
+    }
+
+    void SpawnPickup()
+    {
+        if (Random.value * 100 <= (LevelHandler.Instance.current.pickupChance))
+            PhotonNetwork.Instantiate("Pickup", transform.position, Quaternion.identity);
     }
 
     Transform ClosestTarget()
@@ -111,14 +114,25 @@ public class Enemy : MonoBehaviourPunCallbacks
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Bullet")
-        {
-            currentHp -= 5;
-            Destroy(other.gameObject);
-        }
+            HitByBullet(other.gameObject);
+
 
         else if (other.tag == "Player")
             if (!attacking)
                 attacking = true;
+
+    }
+
+    void HitByBullet(GameObject bullet)
+    {
+        currentHp -= bullet.GetComponent<Projectile>().GetDamage();
+        Destroy(bullet);
+    }
+
+    void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.tag == "Bullet")
+            HitByBullet(other.gameObject);
 
     }
 

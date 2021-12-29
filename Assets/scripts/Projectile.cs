@@ -4,13 +4,15 @@ using Photon.Pun;
 
 public class Projectile : MonoBehaviourPun
 {
-    [SerializeField] private float projectileSpeed, projectileDamage;
+    [SerializeField] private float projectileSpeed;
+    [SerializeField] private int projectileDamage;
 
     static float lifetime = 5f;
 
     void Start()
     {
-        Destroy(gameObject, lifetime);
+        photonView.RPC("DestroyProjectile", RpcTarget.All);
+
     }
 
     void FixedUpdate()
@@ -18,6 +20,8 @@ public class Projectile : MonoBehaviourPun
         transform.Translate(Vector3.right * projectileSpeed * Time.fixedDeltaTime);
     }
 
-    public float GetDamage() { return projectileDamage; }
-}
+    [PunRPC]
+    void DestroyProjectile() { Destroy(gameObject, lifetime); }
 
+    public int GetDamage() { return projectileDamage; }
+}

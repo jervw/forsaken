@@ -1,11 +1,12 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Weapon", menuName = "Weapon")]
+[CreateAssetMenu(fileName = "Weapon", menuName = "ScriptableObjects/Weapon")]
 public class WeaponData : ScriptableObject
 {
     public new string name;
-    public float bulletSpread, fireDelay, reloadTime;
-    public int maxAmmo;
+    public float bulletSpread, fireDelay, reloadTime, fireOffset;
+    public int maxAmmo, bulletsPerShot = 1;
+    public AmmoType ammoType;
+    public enum AmmoType { Bullet, Shell }
     public GameObject projectile;
-    public Vector3 fireOffset;
 }

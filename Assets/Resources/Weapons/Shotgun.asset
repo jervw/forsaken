@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Shotgun
   m_EditorClassIdentifier: 
   name: Shotgun
-  bulletSpeed: 50
-  bulletSpread: 0
-  fireDelay: 0
-  reloadTime: 0
-  maxAmmo: 0
-  projectile: {fileID: 0}
-  firePosition: {x: 0, y: 0, z: 0}
+  bulletSpread: 20
+  fireDelay: 0.6
+  reloadTime: 3
+  fireOffset: 3.5
+  maxAmmo: 6
+  bulletsPerShot: 5
+  ammoType: 1
+  projectile: {fileID: 7508169355806454402, guid: 1f26e31b6f01886468ed2fe0da7da314, type: 3}

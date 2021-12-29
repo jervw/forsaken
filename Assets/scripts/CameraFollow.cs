@@ -18,8 +18,8 @@ namespace Com.Jervw.Crimson
             if (!photonView.IsMine) return;
 
             cam = Camera.main;
-            minBounds = LevelData.minBounds;
-            maxBounds = LevelData.maxBounds;
+            minBounds = LevelHandler.Instance.current.minBounds;
+            maxBounds = LevelHandler.Instance.current.maxBounds;
             halfHeight = cam.orthographicSize;
             halfWidth = halfHeight * Screen.width / Screen.height;
         }

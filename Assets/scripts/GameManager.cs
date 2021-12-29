@@ -33,14 +33,11 @@ namespace Com.Jervw.Crimson
                 return;
             }
 
-
-            if (playerPrefab == null)
+            if (!playerPrefab)
                 Debug.LogError("Missing playerPrefab reference");
             else
                 PhotonNetwork.Instantiate(playerPrefab.name, Vector2.zero, Quaternion.identity, 0);
         }
-
-
 
         public void LeaveRoom()
         {
@@ -63,10 +60,7 @@ namespace Com.Jervw.Crimson
         public void LoadLevel()
         {
             if (PhotonNetwork.IsMasterClient)
-            {
-                Debug.Log("Loading level");
                 PhotonNetwork.LoadLevel(1);
-            }
         }
     }
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Pickup", menuName = "Pickup")]
-public class PickupScriptable : ScriptableObject
+[CreateAssetMenu(fileName = "Pickup", menuName = "ScriptableObjects/Pickup")]
+public class PickupData : ScriptableObject
 {
     public new string name;
     public Sprite icon;

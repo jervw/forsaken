@@ -15,7 +15,6 @@ public class ProgressBar : MonoBehaviour
 
     void LateUpdate()
     {
-        float progress = 1 - LevelData.GetProgress();
-        progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, progress, smoothing * Time.deltaTime);
+        progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, LevelHandler.Instance.GetProgress(), smoothing * Time.deltaTime);
     }
 }
