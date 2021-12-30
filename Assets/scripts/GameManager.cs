@@ -49,7 +49,6 @@ namespace Com.Jervw.Crimson
             }
             else
                 SceneManager.LoadScene(0);
-
         }
 
         public override void OnLeftRoom()
@@ -57,10 +56,5 @@ namespace Com.Jervw.Crimson
             SceneManager.LoadScene(0);
         }
 
-        public void LoadLevel()
-        {
-            if (PhotonNetwork.IsMasterClient)
-                PhotonNetwork.LoadLevel(1);
-        }
     }
 }

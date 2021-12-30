@@ -72,7 +72,7 @@ public class Enemy : MonoBehaviourPun
     {
         //animator.SetBool("isDead", true);
         Destroy(gameObject);
-        LevelHandler.Instance.enemyDeathCount++;
+        LevelHandler.Instance.EnemyDeath();
     }
 
     void SpawnPickup()

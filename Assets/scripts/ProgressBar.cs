@@ -1,12 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class ProgressBar : MonoBehaviour
+public class ProgressBar : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     float smoothing = 2f;
 
     Image progressBar;
+    float progress;
 
     void Awake()
     {
@@ -15,6 +17,7 @@ public class ProgressBar : MonoBehaviour
 
     void LateUpdate()
     {
+        //progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, progress, smoothing * Time.deltaTime);
         progressBar.fillAmount = Mathf.Lerp(progressBar.fillAmount, LevelHandler.Instance.GetProgress(), smoothing * Time.deltaTime);
     }
 }

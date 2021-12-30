@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MainMenuState : MonoBehaviour
@@ -10,6 +8,7 @@ public class MainMenuState : MonoBehaviour
 
     void Awake()
     {
+        Cursor.visible = true;
         SetState(MenuState.Main);
     }
 

@@ -65,7 +65,6 @@ namespace Com.Jervw.Crimson
             if (Input.GetKeyDown(KeyCode.R))
                 weaponHandler.CallReload();
 
-
         }
 
 

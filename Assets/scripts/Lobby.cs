@@ -1,5 +1,5 @@
-using System.Collections;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -51,8 +51,6 @@ namespace Com.Jervw.Crimson
         public void StartLevel()
         {
             PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
-            LevelHandler.Instance.SetLevelData(0);
-            PhotonNetwork.AutomaticallySyncScene = true;
         }
 
         public void CreateLobby()
@@ -112,11 +110,15 @@ namespace Com.Jervw.Crimson
 
         public override void OnPlayerEnteredRoom(Player newPlayer)
         {
-
             UpdatePlayerList();
         }
 
         public override void OnPlayerLeftRoom(Player otherPlayer)
+        {
+            UpdatePlayerList();
+        }
+
+        public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
         {
             UpdatePlayerList();
         }

@@ -34,11 +34,5 @@ public class InitBoundaries : MonoBehaviourPun
         points.SetValue(botRightCorner, 3);
         points.SetValue(botLeftCorner, 4);
         edgeCol.points = points;
-
-        LevelHandler.Instance.SetBounds(minBounds, maxBounds);
-
-        if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.Instantiate("EnemySpawner", transform.position, Quaternion.identity);
-
     }
 }

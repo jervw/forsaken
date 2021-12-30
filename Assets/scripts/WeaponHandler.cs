@@ -13,7 +13,6 @@ public class WeaponHandler : MonoBehaviourPun
 
     WeaponData currentWeapon;
     Animator animator;
-    Coroutine isReloading;
     float currentAmmo;
     bool canShoot;
 
@@ -56,7 +55,9 @@ public class WeaponHandler : MonoBehaviourPun
     public void CallReload()
     {
         StopAllCoroutines();
-        StartCoroutine(Reload());
+        Debug.Log(currentAmmo + " " + currentWeapon.maxAmmo);
+        if (currentAmmo < currentWeapon.maxAmmo)
+            StartCoroutine(Reload());
     }
 
     IEnumerator Reload()
@@ -96,7 +97,6 @@ public class WeaponHandler : MonoBehaviourPun
                 currentWeapon = null;
                 break;
         }
-        Debug.Log("Switched to " + currentWeapon.name);
 
         if (currentWeapon != null)
         {
