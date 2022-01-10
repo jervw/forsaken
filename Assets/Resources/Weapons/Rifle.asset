@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Rifle
   bulletSpread: 8
-  fireDelay: 0.15
-  reloadTime: 2
-  fireOffset: 3.5
+  fireDelay: 0.18
+  reloadTime: 1.9
+  fireOffset: {x: 3.423, y: -0.5}
   maxAmmo: 30
   bulletsPerShot: 1
   ammoType: 0
   projectile: {fileID: 7508169355806454402, guid: 4456b2c8565d1f448b4743877d35b8f5, type: 3}
+  fireSound: {fileID: 8300000, guid: 8f74826f6ffd64d458e88ec08f73dc3d, type: 3}
+  reloadSound: {fileID: 8300000, guid: 9f5f38a312e2b71458425dea3f13662a, type: 3}

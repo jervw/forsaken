@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
-
 using Photon.Pun;
+using Random = UnityEngine.Random;
+
 
 public class Pickup : MonoBehaviourPunCallbacks
 {
@@ -11,7 +11,8 @@ public class Pickup : MonoBehaviourPunCallbacks
     SpriteRenderer spriteRenderer;
 
     GameObject effect;
-    bool consumeOnPickup;
+    string pickupName;
+    bool consumeOnPickup, isWeapon;
     float effectDuration;
 
     void Awake()
@@ -26,20 +27,29 @@ public class Pickup : MonoBehaviourPunCallbacks
         gameObject.name = pickup.name;
         spriteRenderer.sprite = pickup.icon;
         effect = pickup.effect;
+        pickupName = pickup.name;
         consumeOnPickup = pickup.consumeOnPickup;
-        effectDuration = pickup.effectDuration;
+        isWeapon = pickup.isWeapon;
+        effectDuration = pickup.duration;
     }
 
     void Activate(GameObject player)
     {
-        if (effect == null) return;
-        Debug.Log("Activating effect: " + effect.name);
+        Debug.Log("Activating effect: " + pickupName);
 
-        if (consumeOnPickup)
-            Instantiate(effect, transform.position, Quaternion.identity, player.transform);
+        if (isWeapon)
+        {
+            var wpn = player.GetComponent<WeaponHandler>();
 
+        }
 
-        PhotonNetwork.Instantiate(effect.name, transform.position, Quaternion.identity);
+        else if (consumeOnPickup)
+        {
+            var obj = Instantiate(effect, transform.position, Quaternion.identity, player.transform);
+            obj.name = effect.name;
+        }
+        else
+            PhotonNetwork.Instantiate(effect.name, transform.position, Quaternion.identity);
     }
 
     void OnTriggerEnter2D(Collider2D other)

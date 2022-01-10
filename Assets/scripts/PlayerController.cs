@@ -1,9 +1,7 @@
-using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 using Photon.Pun;
-using Photon.Realtime;
 
 namespace Com.Jervw.Crimson
 {
@@ -26,16 +24,12 @@ namespace Com.Jervw.Crimson
             animator = GetComponent<Animator>();
             rb2d = GetComponent<Rigidbody2D>();
             weaponHandler = GetComponent<WeaponHandler>();
-        }
-
-        void Start()
-        {
             cam = Camera.main;
         }
 
         void Update()
         {
-            if (!photonView.IsMine) return;
+            if (!photonView.IsMine || GameManager.Instance.State != GameManager.GameState.Playing) return;
 
             movementInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
@@ -61,28 +55,20 @@ namespace Com.Jervw.Crimson
 
             if (Input.GetMouseButton(0))
                 weaponHandler.Shoot();
-
-            if (Input.GetKeyDown(KeyCode.R))
-                weaponHandler.CallReload();
-
         }
-
-
-
 
         public void TakeDamage(int damage)
         {
+            health -= damage;
             photonView.RPC("TakeDamageRPC", RpcTarget.All, damage);
         }
 
         [PunRPC]
         void TakeDamageRPC(int damage)
         {
+
         }
 
-        public float GetHealth()
-        {
-            return health;
-        }
+        public float GetHealth() => health;
     }
 }

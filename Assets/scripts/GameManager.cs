@@ -1,60 +1,127 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
 using Photon.Pun;
-using Photon.Realtime;
 
-
-namespace Com.Jervw.Crimson
+public class GameManager : MonoBehaviourPun
 {
+    public static GameManager Instance { get; private set; }
 
-    public class GameManager : MonoBehaviourPunCallbacks
+    public static event Action<GameState> OnBeforeStateChanged;
+    public static event Action<GameState> OnAfterStateChanged;
+
+    public GameState State { get; private set; }
+    public GameObject pauseMenu;
+
+
+    void Awake()
     {
-        public GameObject playerPrefab;
-
-        static GameManager instance;
-
-        void Awake()
-        {
-            /*
-            DontDestroyOnLoad(this);
-            if (instance == null)
-                instance = this;
-            else
-                Destroy(this.gameObject);
-            */
-        }
-
-        void Start()
-        {
-            if (!PhotonNetwork.IsConnected)
-            {
-                SceneManager.LoadScene("Lobby");
-                return;
-            }
-
-            if (!playerPrefab)
-                Debug.LogError("Missing playerPrefab reference");
-            else
-                PhotonNetwork.Instantiate(playerPrefab.name, Vector2.zero, Quaternion.identity, 0);
-        }
-
-        public void LeaveRoom()
-        {
-            if (PhotonNetwork.IsConnected)
-            {
-                Debug.Log("Leaving room and disconnecting from master");
-                PhotonNetwork.LeaveRoom();
-                PhotonNetwork.Disconnect();
-            }
-            else
-                SceneManager.LoadScene(0);
-        }
-
-        public override void OnLeftRoom()
+        if (!PhotonNetwork.IsConnected)
         {
             SceneManager.LoadScene(0);
+            return;
         }
 
+        if (!Instance)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else Destroy(gameObject);
     }
+
+    void Start() => ChangeState(GameState.Starting);
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (State == GameState.Playing)
+                ChangeState(GameState.Paused);
+            else if (State == GameState.Paused)
+                ChangeState(GameState.Playing);
+        }
+    }
+
+    public void ChangeState(GameState newState)
+    {
+
+        OnBeforeStateChanged?.Invoke(newState);
+
+        State = newState;
+        switch (newState)
+        {
+            case GameState.Starting:
+                HandleStarting();
+                break;
+            case GameState.Playing:
+                HandlePlaying();
+                break;
+            case GameState.Paused:
+                HandlePause();
+                break;
+            case GameState.Win:
+                HandleWin();
+                break;
+            case GameState.Lose:
+                HandleLose();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
+        }
+
+        OnAfterStateChanged?.Invoke(newState);
+
+        Debug.Log($"STATE: {newState}");
+    }
+
+    private void HandleStarting()
+    {
+        PhotonNetwork.Instantiate(LevelHandler.Instance.current.playerPrefab.name, Vector2.zero, Quaternion.identity);
+
+        if (PhotonNetwork.IsMasterClient)
+            PhotonNetwork.Instantiate("EnemySpawner", transform.position, Quaternion.identity);
+
+        ChangeState(GameState.Playing);
+    }
+
+    private void HandlePlaying()
+    {
+        Time.timeScale = 1;
+        AudioManager.Instance.Play(LevelHandler.Instance.current.music.clip.name); ;
+        pauseMenu.SetActive(false);
+
+        // win state
+
+
+    }
+
+    private void HandlePause()
+    {
+        if (PhotonNetwork.OfflineMode)
+        {
+            Time.timeScale = 0;
+            AudioManager.Instance.Pause(LevelHandler.Instance.current.music.clip.name);
+        }
+        pauseMenu.SetActive(true);
+    }
+
+    private void HandleWin()
+    {
+    }
+
+    private void HandleLose()
+    {
+    }
+
+    [Serializable]
+    public enum GameState
+    {
+        Starting,
+        Playing,
+        Paused,
+        Win,
+        Lose,
+    }
+
 }

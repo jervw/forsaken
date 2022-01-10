@@ -11,6 +11,9 @@ public class LevelData : ScriptableObject
     public int enemyCountMax;
     public float enemySpawnDelay, enemySpawnRate, enemyIncreaseRate;
 
+    [Header("Music")]
+    public Sound music;
+
     [HideInInspector]
     public Vector2 minBounds, maxBounds;
 }

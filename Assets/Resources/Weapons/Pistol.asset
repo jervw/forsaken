@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Pistol
   bulletSpread: 5
-  fireDelay: 0.5
+  fireDelay: 0.3
   reloadTime: 1.8
-  fireOffset: 2.8
+  fireOffset: {x: 3, y: -0.7}
   maxAmmo: 15
   bulletsPerShot: 1
   ammoType: 0
   projectile: {fileID: 7508169355806454402, guid: 42d66086a84db78469aa588c0d7f80a6, type: 3}
+  fireSound: {fileID: 8300000, guid: 75183ec42d7926448a17e1b17e806b20, type: 3}
+  reloadSound: {fileID: 8300000, guid: 1136e94ea0723704a8ea6636680bbfea, type: 3}

@@ -6,24 +6,35 @@ public class LevelHandler : MonoBehaviourPun
     public static LevelHandler Instance { get; private set; }
 
     [HideInInspector] public LevelData current;
-    [HideInInspector] public int enemyCount, enemyDeathCount;
+    [HideInInspector] public int enemyCount = 0, enemyDeathCount = 0;
     [SerializeField] private LevelData levelData;
 
-    GameObject ground;
+    SpriteRenderer ground;
     EdgeCollider2D edgeCol;
 
-    private void Awake()
+    void Awake()
     {
         Instance = this;
         current = levelData;
-        enemyCount = 0;
-        enemyDeathCount = 0;
+
+        ground = GetComponentInChildren<SpriteRenderer>();
+        edgeCol = GetComponentInChildren<EdgeCollider2D>();
     }
 
-    public void SetBounds()
+    void Start() => SetBounds();
+
+    void Update()
     {
-        var minBounds = ground.GetComponent<SpriteRenderer>().bounds.min;
-        var maxBounds = ground.GetComponent<SpriteRenderer>().bounds.max;
+        if (GameManager.Instance.State != GameManager.GameState.Playing) return;
+
+        if (GetProgress() >= 1f)
+            GameManager.Instance.ChangeState(GameManager.GameState.Win);
+    }
+
+    void SetBounds()
+    {
+        var minBounds = ground.GetComponentInChildren<SpriteRenderer>().bounds.min;
+        var maxBounds = ground.GetComponentInChildren<SpriteRenderer>().bounds.max;
 
         Vector2 botLeftCorner = minBounds;
         Vector2 topLeftCorner = new Vector2(minBounds.x, -minBounds.y);
@@ -42,11 +53,6 @@ public class LevelHandler : MonoBehaviourPun
         current.maxBounds = maxBounds;
     }
 
-    public float GetProgress()
-    {
-        return (float)enemyDeathCount / current.enemyCountMax;
-    }
-
     public Vector2 GetRandomPos()
     {
         return new Vector2(
@@ -55,8 +61,7 @@ public class LevelHandler : MonoBehaviourPun
         );
     }
 
-    public void EnemyDeath()
-    {
-        enemyDeathCount++;
-    }
+    public float GetProgress() => (float)enemyDeathCount / current.enemyCountMax;
+
+    public void EnemyDeath() => enemyDeathCount++;
 }

@@ -1,144 +1,144 @@
 using System.Collections;
 using UnityEngine;
-using Com.Jervw.Crimson;
-
 using Photon.Pun;
 using Photon.Realtime;
 
-public class Enemy : MonoBehaviourPun
+
+namespace Com.Jervw.Crimson
 {
-    public int maxHp;
-
-    [SerializeField] float chaseSpeed, attackRate, attackRange;
-
-
-    Animator animator;
-    Transform target;
-    int currentHp;
-    bool attacking;
-    float nextAttackTime;
-
-    void Start()
+    public class Enemy : MonoBehaviourPun
     {
-        animator = GetComponent<Animator>();
-        currentHp = maxHp;
-        target = ClosestTarget();
-    }
+        public int maxHp;
 
-    void Update()
-    {
+        [SerializeField] float chaseSpeed, attackRate, attackRange;
 
 
-        if (target != null)
+        Animator animator;
+        ParticleSystem hitParticles;
+        SpriteRenderer spriteRenderer;
+        Transform target;
+        int currentHp;
+        bool attacking, frozen = false;
+        float nextAttackTime;
+
+        void Start()
         {
-            float distance = (target.position - transform.position).magnitude;
+            animator = GetComponent<Animator>();
+            hitParticles = GetComponentInChildren<ParticleSystem>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
 
-            // Look at player
-            transform.right = target.position - transform.position;
+            currentHp = maxHp;
+            target = ClosestTarget();
+        }
 
-            // Chase player
-            if (!attacking && distance > attackRange)
+        void Update()
+        {
+
+            if (target && !frozen)
             {
-                animator.SetBool("isMoving", true);
-                animator.SetBool("isAttacking", false);
-                CancelInvoke("Attack");
-                transform.Translate(new Vector2(chaseSpeed * Time.deltaTime, 0));
-            }
-            else
-            {
-                animator.SetBool("isAttacking", true);
-                if (Time.time > nextAttackTime)
+                float distance = (target.position - transform.position).magnitude;
+
+                // Look at player
+                transform.right = target.position - transform.position;
+
+                // Chase player
+                if (!attacking && distance > attackRange)
                 {
-                    nextAttackTime = Time.time + attackRate;
-                    Debug.Log("Attacking");
-                    target.gameObject.GetComponent<PlayerController>().TakeDamage(1);
+                    animator.SetBool("isMoving", true);
+                    animator.SetBool("isAttacking", false);
+                    CancelInvoke("Attack");
+                    transform.Translate(new Vector2(chaseSpeed * Time.deltaTime, 0));
+                }
+                else
+                {
+                    animator.SetBool("isAttacking", true);
+                    if (Time.time > nextAttackTime)
+                    {
+                        nextAttackTime = Time.time + attackRate;
+                        Debug.Log("Attacking");
+                        AudioManager.Instance.Play("zombie_bite");
+                        target.gameObject.GetComponent<PlayerController>().TakeDamage(1);
+                    }
                 }
             }
+            else
+                target = ClosestTarget();
+
+
+
+            if (currentHp <= 0)
+                OnDeath();
         }
-        else
-            target = ClosestTarget();
 
-
-
-        if (currentHp <= 0)
+        public void OnDeath(bool drop = true)
         {
-            photonView.RPC("OnDeath", RpcTarget.All);
-            SpawnPickup();
+            photonView.RPC("OnDeathRPC", RpcTarget.All);
+
+            if (drop && Random.value * 100 <= (LevelHandler.Instance.current.pickupChance))
+                PhotonNetwork.Instantiate("Pickup", transform.position, Quaternion.identity);
         }
-    }
 
-    [PunRPC]
-    public void OnDeath()
-    {
-        //animator.SetBool("isDead", true);
-        Destroy(gameObject);
-        LevelHandler.Instance.EnemyDeath();
-    }
 
-    void SpawnPickup()
-    {
-        if (Random.value * 100 <= (LevelHandler.Instance.current.pickupChance))
-            PhotonNetwork.Instantiate("Pickup", transform.position, Quaternion.identity);
-    }
-
-    Transform ClosestTarget()
-    {
-        GameObject[] targets = GameObject.FindGameObjectsWithTag("Player");
-        Transform bestTarget = null;
-        float closestDistance = Mathf.Infinity;
-        foreach (var target in targets)
+        [PunRPC]
+        void OnDeathRPC()
         {
-            float distance = Vector3.Distance(transform.position, target.transform.position);
-            if (distance < closestDistance)
+            //animator.SetBool("isDead", true);
+            Destroy(gameObject);
+            LevelHandler.Instance.EnemyDeath();
+        }
+
+
+        Transform ClosestTarget()
+        {
+            GameObject[] targets = GameObject.FindGameObjectsWithTag("Player");
+            Transform bestTarget = null;
+            float closestDistance = Mathf.Infinity;
+            foreach (var target in targets)
             {
-                closestDistance = distance;
-                bestTarget = target.transform;
+                float distance = Vector3.Distance(transform.position, target.transform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    bestTarget = target.transform;
+                }
+
+                Physics2D.IgnoreCollision(target.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+            }
+            return bestTarget;
+        }
+
+        public IEnumerator FreezeEnemy(float time)
+        {
+            frozen = true;
+            animator.enabled = false;
+            spriteRenderer.color = Color.cyan;
+            yield return new WaitForSeconds(time);
+            spriteRenderer.color = Color.white;
+            frozen = false;
+            animator.enabled = true;
+        }
+
+
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.tag == "Bullet")
+            {
+                currentHp -= other.gameObject.GetComponent<Projectile>().GetDamage();
+                hitParticles.Play();
+                PhotonNetwork.Instantiate("Blood", transform.position, Quaternion.identity);
+                Destroy(other.gameObject);
             }
 
-            Physics2D.IgnoreCollision(target.GetComponent<Collider2D>(), GetComponent<Collider2D>());
+            else if (other.tag == "Player")
+                if (!attacking)
+                    attacking = true;
+
         }
-        return bestTarget;
-    }
 
-    public IEnumerator FreezeEnemy(float time)
-    {
-        float tmp = chaseSpeed;
-        chaseSpeed = 0;
-        //animator.SetBool("isFrozen", true);
-        yield return new WaitForSeconds(time);
-        //animator.SetBool("isFrozen", false);
-        chaseSpeed = tmp;
-    }
-
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Bullet")
-            HitByBullet(other.gameObject);
-
-
-        else if (other.tag == "Player")
-            if (!attacking)
-                attacking = true;
-
-    }
-
-    void HitByBullet(GameObject bullet)
-    {
-        currentHp -= bullet.GetComponent<Projectile>().GetDamage();
-        Destroy(bullet);
-    }
-
-    void OnTriggerStay2D(Collider2D other)
-    {
-        if (other.tag == "Bullet")
-            HitByBullet(other.gameObject);
-
-    }
-
-    void OnTriggerExit2D(Collider2D other)
-    {
-        if (other.tag == "Player")
-            attacking = false;
+        void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.tag == "Player")
+                attacking = false;
+        }
     }
 }

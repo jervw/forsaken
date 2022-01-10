@@ -78,9 +78,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 489a1d05bec40b9489e9deffd99a0f50, type: 3}
-  m_Color: {r: 1, g: 0.6347193, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.74023306, b: 0.28773582, a: 0.5882353}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -102,8 +102,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0470cc242bae7f4d8dd433ace83ac53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpeed: 100
-  lifetime: 5
+  projectileSpeedMin: 100
+  projectileSpeedMax: 100
+  lifetime: 3
   projectileDamage: 10
 --- !u!50 &6404449433419769802
 Rigidbody2D:
@@ -212,7 +213,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -232,8 +233,8 @@ TrailRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Time: 0.1
+  m_SortingOrder: 2
+  m_Time: 0.05
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -254,32 +255,32 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 0.7924528, g: 0.3909252, b: 0, a: 1}
-      key1: {r: 0.81990755, g: 0.41547891, b: 0.022749448, a: 1}
-      key2: {r: 0.82499176, g: 0.4200259, b: 0.026962308, a: 0}
-      key3: {r: 0.827881, g: 0.42424116, b: 0.03249664, a: 0}
-      key4: {r: 0.94987005, g: 0.6022195, b: 0.26616955, a: 0}
-      key5: {r: 0.8357209, g: 0.43567932, b: 0.04751414, a: 0}
+      key0: {r: 0.81990755, g: 0.41547891, b: 0.022749448, a: 1}
+      key1: {r: 1, g: 0.6529147, b: 0.3160377, a: 1}
+      key2: {r: 0.81990755, g: 0.41547891, b: 0.022749448, a: 1}
+      key3: {r: 0.9528302, g: 0.60774535, b: 0.27416337, a: 0}
+      key4: {r: 0.9528302, g: 0.60774535, b: 0.27416337, a: 0}
+      key5: {r: 0.9528302, g: 0.60774535, b: 0.27416337, a: 0}
       key6: {r: 0.9528302, g: 0.60774535, b: 0.27416337, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
+      key7: {r: 0.9528302, g: 0.60774535, b: 0.27416337, a: 0}
       ctime0: 0
-      ctime1: 8867
-      ctime2: 27371
-      ctime3: 30455
-      ctime4: 57440
-      ctime5: 58018
+      ctime1: 65535
+      ctime2: 65535
+      ctime3: 63415
+      ctime4: 63415
+      ctime5: 63415
       ctime6: 63415
-      ctime7: 0
+      ctime7: 63415
       atime0: 0
       atime1: 65535
-      atime2: 0
+      atime2: 65535
       atime3: 0
       atime4: 0
       atime5: 0
       atime6: 0
       atime7: 0
       m_Mode: 0
-      m_NumColorKeys: 7
+      m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 5
     numCapVertices: 0
@@ -287,6 +288,6 @@ TrailRenderer:
     textureMode: 1
     shadowBias: 0.5
     generateLightingData: 1
-  m_MinVertexDistance: 0.15
+  m_MinVertexDistance: 0.1
   m_Autodestruct: 1
   m_Emitting: 1

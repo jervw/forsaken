@@ -108,19 +108,10 @@ namespace Com.Jervw.Crimson
         }
 
 
-        public override void OnPlayerEnteredRoom(Player newPlayer)
-        {
-            UpdatePlayerList();
-        }
+        public override void OnPlayerEnteredRoom(Player newPlayer) => UpdatePlayerList();
 
-        public override void OnPlayerLeftRoom(Player otherPlayer)
-        {
-            UpdatePlayerList();
-        }
+        public override void OnPlayerLeftRoom(Player otherPlayer) => UpdatePlayerList();
 
-        public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged)
-        {
-            UpdatePlayerList();
-        }
+        public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged) => UpdatePlayerList();
     }
 }

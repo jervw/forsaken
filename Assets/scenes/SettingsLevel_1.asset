@@ -12,10 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f13a35212e320f844823d30f9aae77fc, type: 3}
   m_Name: SettingsLevel_1
   m_EditorClassIdentifier: 
-  pickupChance: 25
-  enemyCountMax: 10
+  playerPrefab: {fileID: 6685625820639829394, guid: 1cdfe0d4bf411c642b6ea01891164cd5, type: 3}
+  enemyPrefabs: []
+  pickupChance: 50
+  enemyCountMax: 20
   enemySpawnDelay: 5
-  enemySpawnRate: 5
-  enemyIncreaseRate: 0.5
+  enemySpawnRate: 4
+  enemyIncreaseRate: 0.05
+  music: {fileID: 11400000, guid: cd9208cf6dd3126419793fc23db277de, type: 2}
   minBounds: {x: -75, y: -75}
   maxBounds: {x: 75, y: 75}

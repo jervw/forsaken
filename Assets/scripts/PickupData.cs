@@ -6,6 +6,6 @@ public class PickupData : ScriptableObject
     public new string name;
     public Sprite icon;
     public GameObject effect;
-    public bool consumeOnPickup;
-    public float effectDuration;
+    public bool consumeOnPickup, isWeapon;
+    public float duration;
 }

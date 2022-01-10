@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: Shotgun
   m_EditorClassIdentifier: 
   name: Shotgun
-  bulletSpread: 20
+  bulletSpread: 15
   fireDelay: 0.6
   reloadTime: 3
-  fireOffset: 3.5
+  fireOffset: {x: 3.499, y: -0.5}
   maxAmmo: 6
   bulletsPerShot: 5
   ammoType: 1
   projectile: {fileID: 7508169355806454402, guid: 1f26e31b6f01886468ed2fe0da7da314, type: 3}
+  fireSound: {fileID: 8300000, guid: 221adb78cf0605a468ebf8eb4088bbff, type: 3}
+  reloadSound: {fileID: 8300000, guid: ec10128cec129604b865d02e6a9983f1, type: 3}
