@@ -102,10 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0470cc242bae7f4d8dd433ace83ac53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectileSpeedMin: 100
-  projectileSpeedMax: 100
-  lifetime: 3
-  projectileDamage: 10
+  weapon: {fileID: 11400000, guid: fcdb2a34250c5d147baa1782fbe65b5a, type: 2}
 --- !u!50 &6404449433419769802
 Rigidbody2D:
   serializedVersion: 4
@@ -140,7 +137,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.46301422, y: -0.0025954694}
+  m_Offset: {x: -0.022851288, y: -0.0009705052}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -151,7 +148,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.9146829, y: 0.058361188}
+  m_Size: {x: 0.31344473, y: 0.14610948}
   m_EdgeRadius: 0
 --- !u!114 &-5854506355466784838
 MonoBehaviour:
@@ -213,7 +210,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

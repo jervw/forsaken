@@ -9,8 +9,8 @@ public class WeaponHandler : MonoBehaviourPun
 {
     public Transform firePosition, upperBody;
     public WeaponData[] possibleWeapons;
+    [HideInInspector] public WeaponData currentWeapon;
 
-    WeaponData currentWeapon;
     Animator animator;
 
     float currentAmmo;
@@ -20,19 +20,6 @@ public class WeaponHandler : MonoBehaviourPun
     {
         animator = GetComponent<Animator>();
         SetWeapon(WeaponData.Weapon.Handgun);
-    }
-
-    private void Update()
-    {
-        if (photonView.IsMine)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                SetWeapon(WeaponData.Weapon.Handgun);
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
-                SetWeapon(WeaponData.Weapon.Shotgun);
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
-                SetWeapon(WeaponData.Weapon.Rifle);
-        }
     }
 
     public void Shoot()
@@ -139,11 +126,9 @@ public class WeaponHandler : MonoBehaviourPun
         }
     }
 
-    public float Spread
-    {
-        get { return currentWeapon.bulletSpread; }
-        set { currentWeapon.bulletSpread = value; }
-    }
-
     bool CanShoot() => currentAmmo > 0 && currentWeapon && canShoot;
+
+    public float Spread { get => currentWeapon.bulletSpread; set => currentWeapon.bulletSpread = value; }
+    public int Damage { get => currentWeapon.projectileDamage; set => currentWeapon.projectileDamage = value; }
+
 }

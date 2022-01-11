@@ -8,15 +8,14 @@ namespace Com.Jervw.Crimson
 {
     public class Enemy : MonoBehaviourPun
     {
-        public int maxHp;
-
+        [SerializeField] int maxHp;
         [SerializeField] float chaseSpeed, attackRate, attackRange;
-
 
         Animator animator;
         ParticleSystem hitParticles;
         SpriteRenderer spriteRenderer;
         Transform target;
+
         int currentHp;
         bool attacking, frozen = false;
         float nextAttackTime;
@@ -123,7 +122,7 @@ namespace Com.Jervw.Crimson
         {
             if (other.tag == "Bullet")
             {
-                currentHp -= other.gameObject.GetComponent<Projectile>().GetDamage();
+                currentHp -= other.gameObject.GetComponent<Projectile>().Damage;
                 hitParticles.Play();
                 PhotonNetwork.Instantiate("Blood", transform.position, Quaternion.identity);
                 Destroy(other.gameObject);

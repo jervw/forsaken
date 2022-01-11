@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafbbd7b64fd1eb4d8590641ab409f45, type: 3}
   m_Name: Rifle
   m_EditorClassIdentifier: 
+  weapon: 0
   name: Rifle
-  bulletSpread: 8
   fireDelay: 0.18
   reloadTime: 1.9
   fireOffset: {x: 3.423, y: -0.5}
@@ -21,5 +21,10 @@ MonoBehaviour:
   bulletsPerShot: 1
   ammoType: 0
   projectile: {fileID: 7508169355806454402, guid: 4456b2c8565d1f448b4743877d35b8f5, type: 3}
+  bulletSpread: 8
+  projectileSpeedMin: 150
+  projectileSpeedMax: 150
+  projectileDamage: 10
+  projectileLifetime: 5
   fireSound: {fileID: 8300000, guid: 8f74826f6ffd64d458e88ec08f73dc3d, type: 3}
   reloadSound: {fileID: 8300000, guid: 9f5f38a312e2b71458425dea3f13662a, type: 3}

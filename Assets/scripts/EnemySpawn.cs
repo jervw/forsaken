@@ -1,7 +1,5 @@
 using UnityEngine;
-
 using Photon.Pun;
-using Photon.Realtime;
 
 namespace Com.Jervw.Crimson
 {
@@ -20,7 +18,7 @@ namespace Com.Jervw.Crimson
         {
             spawnRate -= LevelHandler.Instance.current.enemyIncreaseRate;
 
-            if (LevelHandler.Instance.enemyCount <= LevelHandler.Instance.current.enemyCountMax)
+            if (LevelHandler.Instance.enemyCount < LevelHandler.Instance.current.enemyCountMax)
             {
                 SpawnEnemy();
                 Invoke("Interval", spawnRate);

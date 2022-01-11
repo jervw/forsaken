@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Nuke
   icon: {fileID: 21300000, guid: a7793a5c0e1686246926442a8fb41d97, type: 3}
-  effect: {fileID: 101225719736879468, guid: 8859a1e4338e0660d9df330790371237, type: 3}
+  effect: {fileID: 1362109244195924037, guid: 62a1729cd669e3149a0662fae8303406, type: 3}
   consumeOnPickup: 0
-  effectDuration: 0
+  isWeapon: 0
+  duration: 0

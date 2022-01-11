@@ -40,7 +40,7 @@ public class MainMenuState : MonoBehaviour
         UpdateState();
     }
 
-    public MenuState GetState() { return currentState; }
+    public MenuState GetState() => currentState;
 
     public enum MenuState
     {

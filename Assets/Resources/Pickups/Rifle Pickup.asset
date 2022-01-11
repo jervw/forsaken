@@ -16,5 +16,5 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 28c93481c8c37c049a243707066e9ece, type: 3}
   effect: {fileID: 6825606029388437096, guid: a91d32262a954a843b1712a92b6a63d0, type: 3}
   consumeOnPickup: 1
-  isWeapon: 0
+  isWeapon: 1
   duration: 0

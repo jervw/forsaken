@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviourPun
     public static event Action<GameState> OnAfterStateChanged;
 
     public GameState State { get; private set; }
-    public GameObject pauseMenu;
+    public GameObject pauseMenu, winMenu, loseMenu;
 
 
     void Awake()
@@ -90,10 +90,6 @@ public class GameManager : MonoBehaviourPun
         Time.timeScale = 1;
         AudioManager.Instance.Play(LevelHandler.Instance.current.music.clip.name); ;
         pauseMenu.SetActive(false);
-
-        // win state
-
-
     }
 
     private void HandlePause()
@@ -108,10 +104,15 @@ public class GameManager : MonoBehaviourPun
 
     private void HandleWin()
     {
+
+        AudioManager.Instance.Pause(LevelHandler.Instance.current.music.clip.name);
+        winMenu.SetActive(true);
     }
 
     private void HandleLose()
     {
+        AudioManager.Instance.Pause(LevelHandler.Instance.current.music.clip.name);
+        loseMenu.SetActive(true);
     }
 
     [Serializable]

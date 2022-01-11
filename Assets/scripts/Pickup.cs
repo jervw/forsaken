@@ -35,12 +35,14 @@ public class Pickup : MonoBehaviourPunCallbacks
 
     void Activate(GameObject player)
     {
-        Debug.Log("Activating effect: " + pickupName);
+        Debug.Log("Activating pickup: " + pickupName);
 
         if (isWeapon)
         {
             var wpn = player.GetComponent<WeaponHandler>();
-
+            var weapon = (WeaponData.Weapon)Enum.Parse(typeof(WeaponData.Weapon), pickupName);
+            Debug.Log("Weapon: " + weapon);
+            wpn.SetWeapon(weapon);
         }
 
         else if (consumeOnPickup)

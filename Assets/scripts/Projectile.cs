@@ -3,12 +3,17 @@ using Photon.Pun;
 
 public class Projectile : MonoBehaviourPun
 {
-    [SerializeField] private float projectileSpeedMin, projectileSpeedMax, lifetime = 5f;
-    [SerializeField] private int projectileDamage;
+    public WeaponData weapon;
+    int damage;
 
-    void Awake() => Destroy(gameObject, lifetime);
+    void Awake()
+    {
+        damage = weapon.projectileDamage;
+    }
 
-    void FixedUpdate() => transform.Translate(Vector3.right * Random.Range(projectileSpeedMin, projectileSpeedMax) * Time.fixedDeltaTime);
+    void Start() => Destroy(gameObject, weapon.projectileLifetime);
 
-    public int GetDamage() => projectileDamage;
+    void FixedUpdate() => transform.Translate(Vector3.right * Random.Range(weapon.projectileSpeedMin, weapon.projectileSpeedMax) * Time.fixedDeltaTime);
+
+    public int Damage { get => damage; set => damage = value; }
 }
