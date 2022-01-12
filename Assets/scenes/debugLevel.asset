@@ -15,7 +15,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 6685625820639829394, guid: 1cdfe0d4bf411c642b6ea01891164cd5, type: 3}
   enemyPrefabs: []
   pickupChance: 100
-  enemyCountMax: 3
+  enemyCountMax: 50
   enemySpawnDelay: 1
   enemySpawnRate: 1
   enemyIncreaseRate: 0.05

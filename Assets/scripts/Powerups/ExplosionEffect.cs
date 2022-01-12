@@ -4,8 +4,8 @@ using Com.Jervw.Crimson;
 public class ExplosionEffect : MonoBehaviour
 {
     [SerializeField] float maxRadius, rate = 10f;
-    CircleCollider2D circleCollider;
 
+    CircleCollider2D circleCollider;
     float size = 0f;
 
     void Awake()
@@ -18,7 +18,7 @@ public class ExplosionEffect : MonoBehaviour
         if (size < maxRadius)
         {
             size += rate * Time.fixedDeltaTime;
-            transform.localScale = new Vector2(size, size);
+            this.transform.localScale = new Vector3(size, size, 1f);
         }
         else
             Destroy(gameObject);
