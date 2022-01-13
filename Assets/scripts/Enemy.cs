@@ -81,11 +81,15 @@ namespace Com.Jervw.Crimson
         [PunRPC]
         void OnDeathRPC()
         {
-            //animator.SetBool("isDead", true);
+            // play random sound
+            if (Random.value > 0.5f)
+                AudioManager.Instance.Play("zombie_explode1");
+            else
+                AudioManager.Instance.Play("zombie_explode2");
+
             Destroy(gameObject);
             LevelHandler.Instance.EnemyDeath();
         }
-
 
         Transform ClosestTarget()
         {
@@ -124,6 +128,7 @@ namespace Com.Jervw.Crimson
             {
                 currentHp -= other.gameObject.GetComponent<Projectile>().Damage;
                 hitParticles.Play();
+                AudioManager.Instance.Play("zombie_hit");
                 PhotonNetwork.Instantiate("Blood", transform.position, Quaternion.identity);
                 Destroy(other.gameObject);
             }

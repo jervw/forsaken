@@ -2,15 +2,18 @@ using UnityEngine;
 
 public class MainMenuState : MonoBehaviour
 {
-    public GameObject mainView, lobbyView, roomView;
+    public static MainMenuState Instance;
 
+    public GameObject mainView, settingsView, lobbyView, roomView;
     MenuState currentState;
 
     void Awake()
     {
+        Instance = this;
         Cursor.visible = true;
-        SetState(MenuState.Main);
     }
+
+    void Start() => SetState(MenuState.Main);
 
     void UpdateState()
     {
@@ -18,16 +21,25 @@ public class MainMenuState : MonoBehaviour
         {
             case MenuState.Main:
                 mainView.SetActive(true);
+                settingsView.SetActive(false);
+                lobbyView.SetActive(false);
+                roomView.SetActive(false);
+                break;
+            case MenuState.Settings:
+                mainView.SetActive(true);
+                settingsView.SetActive(true);
                 lobbyView.SetActive(false);
                 roomView.SetActive(false);
                 break;
             case MenuState.Lobby:
                 mainView.SetActive(false);
+                settingsView.SetActive(false);
                 lobbyView.SetActive(true);
                 roomView.SetActive(false);
                 break;
             case MenuState.Room:
                 mainView.SetActive(false);
+                settingsView.SetActive(false);
                 lobbyView.SetActive(false);
                 roomView.SetActive(true);
                 break;
@@ -45,6 +57,7 @@ public class MainMenuState : MonoBehaviour
     public enum MenuState
     {
         Main,
+        Settings,
         Lobby,
         Room,
     }

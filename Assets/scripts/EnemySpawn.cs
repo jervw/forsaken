@@ -5,12 +5,16 @@ namespace Com.Jervw.Crimson
 {
     public class EnemySpawn : MonoBehaviourPun
     {
-        float spawnRate;
+        Vector2 min, max;
+        float spawnRate, spawnBorder = 2f;
 
         void Start()
         {
             if (!PhotonNetwork.IsMasterClient) return;
             spawnRate = LevelHandler.Instance.current.enemySpawnRate;
+            min = LevelHandler.Instance.current.minBounds + new Vector2(spawnBorder, spawnBorder);
+            max = LevelHandler.Instance.current.maxBounds - new Vector2(spawnBorder, spawnBorder);
+
             Invoke("Interval", LevelHandler.Instance.current.enemySpawnDelay);
         }
 
@@ -27,7 +31,8 @@ namespace Com.Jervw.Crimson
 
         void SpawnEnemy()
         {
-            PhotonNetwork.Instantiate("Zombie", LevelHandler.Instance.GetRandomPos(), Quaternion.identity);
+            var spawnPos = new Vector2(Random.Range(min.x, max.x), Random.Range(min.y, max.y));
+            PhotonNetwork.Instantiate("Zombie", spawnPos, Quaternion.identity);
             LevelHandler.Instance.enemyCount++;
         }
     }

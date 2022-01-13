@@ -33,8 +33,8 @@ public class LevelHandler : MonoBehaviourPun
 
     void SetBounds()
     {
-        var minBounds = ground.GetComponentInChildren<SpriteRenderer>().bounds.min;
-        var maxBounds = ground.GetComponentInChildren<SpriteRenderer>().bounds.max;
+        Vector2 minBounds = ground.GetComponentInChildren<SpriteRenderer>().bounds.min;
+        Vector2 maxBounds = ground.GetComponentInChildren<SpriteRenderer>().bounds.max;
 
         Vector2 botLeftCorner = minBounds;
         Vector2 topLeftCorner = new Vector2(minBounds.x, -minBounds.y);
@@ -52,15 +52,6 @@ public class LevelHandler : MonoBehaviourPun
         current.minBounds = minBounds;
         current.maxBounds = maxBounds;
     }
-
-    public Vector2 GetRandomPos()
-    {
-        return new Vector2(
-            Random.Range(current.minBounds.x, current.maxBounds.x),
-            Random.Range(current.minBounds.y, current.maxBounds.y)
-        );
-    }
-
     public float GetProgress() => (float)enemyDeathCount / current.enemyCountMax;
 
     public void EnemyDeath() => enemyDeathCount++;

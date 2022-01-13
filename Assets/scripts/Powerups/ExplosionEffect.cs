@@ -3,6 +3,8 @@ using Com.Jervw.Crimson;
 
 public class ExplosionEffect : MonoBehaviour
 {
+    public Sound sound;
+
     [SerializeField] float maxRadius, rate = 10f;
 
     CircleCollider2D circleCollider;
@@ -12,6 +14,8 @@ public class ExplosionEffect : MonoBehaviour
     {
         circleCollider = GetComponent<CircleCollider2D>();
     }
+
+    void Start() => AudioManager.Instance.Play(sound.name);
 
     void FixedUpdate()
     {

@@ -18,6 +18,7 @@ public class AudioManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
         LoadSounds();
+
     }
 
     void LoadSounds()

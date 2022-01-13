@@ -5120,5 +5120,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c08eb8f9aa33250dbb11ddac4083a856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sound: {fileID: 11400000, guid: 2022c97b0af9e9c479171f13342f832e, type: 2}
   maxRadius: 30
   rate: 15

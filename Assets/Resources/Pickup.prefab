@@ -50,6 +50,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pickups:
   - {fileID: 11400000, guid: 41de37a3bfc26b3b0a2be34e13f7a8c9, type: 2}
+  - {fileID: 11400000, guid: b4e8d59f6e12a964bbbf1029751e2f9c, type: 2}
+  - {fileID: 11400000, guid: 0c35733d2f1094581a6fe012f5de190f, type: 2}
 --- !u!212 &6576339777084581239
 SpriteRenderer:
   m_ObjectHideFlags: 0

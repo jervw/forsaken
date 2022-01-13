@@ -15,20 +15,16 @@ namespace Com.Jervw.Crimson
         public static Lobby Instance;
         public const byte MAX_PLAYERS = 4;
 
-        public Button joinButton;
         public TMP_Text roomName, playerList;
         public TMP_InputField roomNameInput;
 
-        MainMenuState mainState;
-
         void Awake()
         {
-            mainState = GetComponent<MainMenuState>();
             Instance = this;
             PhotonNetwork.AutomaticallySyncScene = true;
-            mainState.SetState(MainMenuState.MenuState.Main);
-
         }
+
+        void Start() => MainMenuState.Instance.SetState(MainMenuState.MenuState.Main);
 
         void UpdatePlayerList()
         {
@@ -45,8 +41,15 @@ namespace Com.Jervw.Crimson
 
         public void OfflineMode()
         {
+            if (MainMenuState.Instance.GetState() == MainMenuState.MenuState.Settings) return;
+
+            if (PhotonNetwork.IsConnected)
+                PhotonNetwork.Disconnect();
+
             PhotonNetwork.OfflineMode = true;
         }
+
+        public void OpenSettingsMenu() => MainMenuState.Instance.SetState(MainMenuState.MenuState.Settings);
 
         public void StartLevel()
         {
@@ -68,6 +71,8 @@ namespace Com.Jervw.Crimson
 
         public void Connect()
         {
+            if (MainMenuState.Instance.GetState() == MainMenuState.MenuState.Settings) return;
+
             PhotonNetwork.GameVersion = UnityEngine.Application.version;
             PhotonNetwork.NickName = Environment.UserName;
             PhotonNetwork.ConnectUsingSettings();
@@ -83,7 +88,7 @@ namespace Com.Jervw.Crimson
             if (!PhotonNetwork.OfflineMode)
             {
                 Debug.Log("Connected to master");
-                mainState.SetState(MainMenuState.MenuState.Lobby);
+                MainMenuState.Instance.SetState(MainMenuState.MenuState.Lobby);
             }
 
             else
@@ -102,11 +107,10 @@ namespace Com.Jervw.Crimson
         {
             if (PhotonNetwork.OfflineMode) StartLevel();
 
-            mainState.SetState(MainMenuState.MenuState.Room);
+            MainMenuState.Instance.SetState(MainMenuState.MenuState.Room);
             roomName.text = PhotonNetwork.CurrentRoom.Name;
             UpdatePlayerList();
         }
-
 
         public override void OnPlayerEnteredRoom(Player newPlayer) => UpdatePlayerList();
 
