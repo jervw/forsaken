@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f13a35212e320f844823d30f9aae77fc, type: 3}
-  m_Name: SettingsLevel_3
+  m_Name: SettingsLevel_3 1
   m_EditorClassIdentifier: 
+  sceneName: Level_3
+  levelName: Grass Hill
   playerPrefab: {fileID: 6685625820639829394, guid: 1cdfe0d4bf411c642b6ea01891164cd5, type: 3}
   enemyPrefabs: []
   pickupChance: 20

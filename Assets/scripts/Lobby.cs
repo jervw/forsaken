@@ -12,22 +12,38 @@ namespace Com.Jervw.Crimson
 {
     public class Lobby : MonoBehaviourPunCallbacks
     {
-        public static Lobby Instance;
-        public const byte MAX_PLAYERS = 4;
 
-        public TMP_Text roomName, playerList;
+        public static Lobby Instance;
+
+        public TMP_Text levelName, roomName, playerList, playerCount;
+        public Button nextLevelButton, prevLevelButton;
         public TMP_InputField roomNameInput;
+
+        [SerializeField] LevelData[] levels;
+        [SerializeField] LevelData selectedLevel;
+
+        const byte MAX_PLAYERS = 4;
+
 
         void Awake()
         {
-            Instance = this;
+            if (!Instance)
+                Instance = this;
+            else
+                Destroy(gameObject);
+            DontDestroyOnLoad(gameObject);
+
+            selectedLevel = levels[0];
             PhotonNetwork.AutomaticallySyncScene = true;
         }
 
         void Start() => MainMenuState.Instance.SetState(MainMenuState.MenuState.Main);
 
-        void UpdatePlayerList()
+        void UpdateRoom()
         {
+            roomName.text = "Room code:  " + PhotonNetwork.CurrentRoom.Name;
+            levelName.text = selectedLevel.levelName;
+
             string players = "";
             foreach (Player p in PhotonNetwork.PlayerList)
             {
@@ -37,6 +53,24 @@ namespace Com.Jervw.Crimson
                 players += "\n";
             }
             playerList.text = players;
+            playerCount.text = PhotonNetwork.PlayerList.Length + "/" + MAX_PLAYERS;
+        }
+
+        public void CycleLevel(bool forward)
+        {
+            int index = Array.IndexOf(levels, selectedLevel);
+            if (forward)
+                index++;
+            else
+                index--;
+
+            if (index >= levels.Length)
+                index = 0;
+            else if (index < 0)
+                index = levels.Length - 1;
+
+            selectedLevel = levels[index];
+            UpdateRoom();
         }
 
         public void OfflineMode()
@@ -51,10 +85,16 @@ namespace Com.Jervw.Crimson
 
         public void OpenSettingsMenu() => MainMenuState.Instance.SetState(MainMenuState.MenuState.Settings);
 
-        public void StartLevel()
+        public void CloseMenu()
         {
-            PhotonNetwork.LoadLevel(SceneManager.GetActiveScene().buildIndex + 1);
+            if (PhotonNetwork.IsConnected)
+                PhotonNetwork.Disconnect();
+            MainMenuState.Instance.SetState(MainMenuState.MenuState.Main);
         }
+
+        public void ExitGame() => Application.Quit();
+
+        public void StartLevel() => PhotonNetwork.LoadLevel(selectedLevel.sceneName);
 
         public void CreateLobby()
         {
@@ -108,14 +148,13 @@ namespace Com.Jervw.Crimson
             if (PhotonNetwork.OfflineMode) StartLevel();
 
             MainMenuState.Instance.SetState(MainMenuState.MenuState.Room);
-            roomName.text = PhotonNetwork.CurrentRoom.Name;
-            UpdatePlayerList();
+            UpdateRoom();
         }
 
-        public override void OnPlayerEnteredRoom(Player newPlayer) => UpdatePlayerList();
+        public override void OnPlayerEnteredRoom(Player newPlayer) => UpdateRoom();
 
-        public override void OnPlayerLeftRoom(Player otherPlayer) => UpdatePlayerList();
+        public override void OnPlayerLeftRoom(Player otherPlayer) => UpdateRoom();
 
-        public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged) => UpdatePlayerList();
+        public override void OnRoomPropertiesUpdate(ExitGames.Client.Photon.Hashtable propertiesThatChanged) => UpdateRoom();
     }
 }

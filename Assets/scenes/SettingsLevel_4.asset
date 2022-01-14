@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f13a35212e320f844823d30f9aae77fc, type: 3}
-  m_Name: SettingsLevel_2
+  m_Name: SettingsLevel_4
   m_EditorClassIdentifier: 
-  sceneName: Level_2
-  levelName: Desert
+  sceneName: Level_3
+  levelName: Mountain
   playerPrefab: {fileID: 6685625820639829394, guid: 1cdfe0d4bf411c642b6ea01891164cd5, type: 3}
   enemyPrefabs: []
   pickupChance: 20
-  enemyCountMax: 40
+  enemyCountMax: 50
   enemySpawnDelay: 3
-  enemySpawnRate: 2
-  enemyIncreaseRate: 0.05
+  enemySpawnRate: 3
+  enemyIncreaseRate: 0.1
   music: {fileID: 11400000, guid: cd9208cf6dd3126419793fc23db277de, type: 2}
   minBounds: {x: -75, y: -75}
   maxBounds: {x: 75, y: 75}

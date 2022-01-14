@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Level", menuName = "ScriptableObjects/Level")]
 public class LevelData : ScriptableObject
 {
+    public string sceneName;
+    public string levelName;
     public GameObject playerPrefab;
     public GameObject[] enemyPrefabs;
     [Header("Pickup settings")]

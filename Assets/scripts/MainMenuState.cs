@@ -5,12 +5,14 @@ public class MainMenuState : MonoBehaviour
     public static MainMenuState Instance;
 
     public GameObject mainView, settingsView, lobbyView, roomView;
+    public Sound menuMusic;
     MenuState currentState;
 
     void Awake()
     {
         Instance = this;
         Cursor.visible = true;
+        AudioManager.Instance.Play(menuMusic.clip.name);
     }
 
     void Start() => SetState(MenuState.Main);
