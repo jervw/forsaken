@@ -21,9 +21,9 @@ MonoBehaviour:
   bulletsPerShot: 1
   ammoType: 0
   projectile: {fileID: 7508169355806454402, guid: 42d66086a84db78469aa588c0d7f80a6, type: 3}
-  bulletSpread: 5
-  projectileSpeedMax: 100
+  bulletSpread: 10
   projectileSpeedMin: 100
+  projectileSpeedMax: 100
   projectileDamage: 20
   projectileLifetime: 5
   fireSound: {fileID: 8300000, guid: 75183ec42d7926448a17e1b17e806b20, type: 3}

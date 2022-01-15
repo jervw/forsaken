@@ -40,7 +40,6 @@ namespace Com.Jervw.Crimson
                 lowerBody.transform.rotation = rotation;
             }
 
-            float movement = movementInput.magnitude;
             transform.Translate(movementInput.normalized * movementSpeed * Time.deltaTime);
             animator.SetFloat("isMoving", movementInput.magnitude);
 
@@ -52,6 +51,7 @@ namespace Com.Jervw.Crimson
             var upperBodyAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg;
             upperBody.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, upperBodyAngle));
 
+            weaponHandler.Moving = Mathf.Clamp01(movementInput.magnitude);
 
             if (Input.GetMouseButton(0))
                 weaponHandler.Shoot();

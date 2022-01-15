@@ -51,8 +51,7 @@ public class WeaponHandler : MonoBehaviourPun
 
     void RegularShot()
     {
-        var spread = new Vector3(0, 0, Random.Range(-currentWeapon.bulletSpread, currentWeapon.bulletSpread));
-        var rotation = Quaternion.Euler(upperBody.transform.rotation.eulerAngles - spread);
+        var rotation = Quaternion.Euler(upperBody.transform.rotation.eulerAngles - GetSpread());
         PhotonNetwork.Instantiate(currentWeapon.projectile.name, firePosition.transform.position, rotation);
         currentAmmo--;
     }
@@ -61,18 +60,26 @@ public class WeaponHandler : MonoBehaviourPun
     {
         for (int i = 0; i < currentWeapon.bulletsPerShot; i++)
         {
-            var spread = new Vector3(0, 0, Random.Range(-currentWeapon.bulletSpread, currentWeapon.bulletSpread));
-            var rotation = Quaternion.Euler(upperBody.transform.rotation.eulerAngles - spread);
+            var rotation = Quaternion.Euler(upperBody.transform.rotation.eulerAngles - GetSpread());
             PhotonNetwork.Instantiate(currentWeapon.projectile.name, firePosition.transform.position, rotation);
         }
         currentAmmo--;
     }
+
 
     public void CallReload()
     {
         StopAllCoroutines();
         if (currentAmmo < currentWeapon.maxAmmo)
             StartCoroutine(Reload());
+    }
+
+    Vector3 GetSpread()
+    {
+        var spread = currentWeapon.bulletSpread;
+        if (Moving == 0) spread *= .2f;
+
+        return new Vector3(0, 0, Mathf.Lerp(-spread, spread, Random.value));
     }
 
     IEnumerator Reload(float delay = 0f)
@@ -128,6 +135,7 @@ public class WeaponHandler : MonoBehaviourPun
 
     bool CanShoot() => currentAmmo > 0 && currentWeapon && canShoot;
 
+    public float Moving { get; set; }
     public float Spread { get => currentWeapon.bulletSpread; set => currentWeapon.bulletSpread = value; }
     public int Damage { get => currentWeapon.projectileDamage; set => currentWeapon.projectileDamage = value; }
 

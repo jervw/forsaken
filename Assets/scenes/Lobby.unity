@@ -4934,14 +4934,14 @@ PrefabInstance:
     - target: {fileID: 1612156840182997831, guid: ad5bb2785416f9546a30845b311a085a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1144342244}
+      objectReference: {fileID: 1441577252}
     - target: {fileID: 1612156840182997831, guid: ad5bb2785416f9546a30845b311a085a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CloseMenu
+      value: SaveSettings
       objectReference: {fileID: 0}
     - target: {fileID: 1612156840182997831, guid: ad5bb2785416f9546a30845b311a085a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: Com.Jervw.Crimson.Lobby, Assembly-CSharp
+      value: Settings, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 1612156840182997831, guid: ad5bb2785416f9546a30845b311a085a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
@@ -4976,9 +4976,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5966718666638962876, guid: ad5bb2785416f9546a30845b311a085a, type: 3}
+      propertyPath: m_Value
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5966718666638962876, guid: ad5bb2785416f9546a30845b311a085a, type: 3}
+      propertyPath: m_MinValue
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5966718666638962876, guid: ad5bb2785416f9546a30845b311a085a, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1441577252}
+    - target: {fileID: 5966718666909012463, guid: ad5bb2785416f9546a30845b311a085a, type: 3}
+      propertyPath: m_Value
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5966718666909012463, guid: ad5bb2785416f9546a30845b311a085a, type: 3}
+      propertyPath: m_MinValue
+      value: 0.001
+      objectReference: {fileID: 0}
     - target: {fileID: 5966718666909012463, guid: ad5bb2785416f9546a30845b311a085a, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
