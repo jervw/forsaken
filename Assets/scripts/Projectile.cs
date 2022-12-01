@@ -1,7 +1,6 @@
 using UnityEngine;
-using Photon.Pun;
 
-public class Projectile : MonoBehaviourPun
+public class Projectile : MonoBehaviour
 {
     public WeaponData weapon;
     int damage;

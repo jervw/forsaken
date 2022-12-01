@@ -1,9 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Photon.Pun;
 
-public class GameManager : MonoBehaviourPun
+public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
@@ -16,12 +15,6 @@ public class GameManager : MonoBehaviourPun
 
     void Awake()
     {
-        if (!PhotonNetwork.IsConnected)
-        {
-            SceneManager.LoadScene(0);
-            return;
-        }
-
         if (!Instance)
         {
             Instance = this;
@@ -77,10 +70,7 @@ public class GameManager : MonoBehaviourPun
 
     private void HandleStarting()
     {
-        PhotonNetwork.Instantiate(LevelHandler.Instance.current.playerPrefab.name, Vector2.zero, Quaternion.identity);
-
-        if (PhotonNetwork.IsMasterClient)
-            PhotonNetwork.Instantiate("EnemySpawner", transform.position, Quaternion.identity);
+        // instantiate enemy spawner here TODO
 
         ChangeState(GameState.Playing);
     }
@@ -94,17 +84,13 @@ public class GameManager : MonoBehaviourPun
 
     private void HandlePause()
     {
-        if (PhotonNetwork.OfflineMode)
-        {
-            Time.timeScale = 0;
-            AudioManager.Instance.Pause(LevelHandler.Instance.current.music.clip.name);
-        }
+        Time.timeScale = 0;
+        AudioManager.Instance.Pause(LevelHandler.Instance.current.music.clip.name);
         pauseMenu.SetActive(true);
     }
 
     private void HandleWin()
     {
-
         AudioManager.Instance.Pause(LevelHandler.Instance.current.music.clip.name);
         winMenu.SetActive(true);
     }

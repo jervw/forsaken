@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Photon.Pun;
 
-public class ProgressBar : MonoBehaviourPunCallbacks
+public class ProgressBar : MonoBehaviour
 {
     [SerializeField] float smoothing = 2f;
     Image progressBar;

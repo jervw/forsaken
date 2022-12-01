@@ -1,11 +1,10 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-using Photon.Pun;
 
 namespace Com.Jervw.Crimson
 {
-    public class PlayerController : MonoBehaviourPun
+    public class PlayerController : MonoBehaviour
     {
         public GameObject projectile;
         public Transform firePosition, upperBody, lowerBody;
@@ -29,7 +28,7 @@ namespace Com.Jervw.Crimson
 
         void Update()
         {
-            if (!photonView.IsMine || GameManager.Instance.State != GameManager.GameState.Playing) return;
+            if (GameManager.Instance.State != GameManager.GameState.Playing) return;
 
             movementInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
@@ -60,13 +59,6 @@ namespace Com.Jervw.Crimson
         public void TakeDamage(int damage)
         {
             health -= damage;
-            photonView.RPC("TakeDamageRPC", RpcTarget.All, damage);
-        }
-
-        [PunRPC]
-        void TakeDamageRPC(int damage)
-        {
-
         }
 
         public float GetHealth() => health;

@@ -1,16 +1,14 @@
 using UnityEngine;
-using Photon.Pun;
 
 namespace Com.Jervw.Crimson
 {
-    public class EnemySpawn : MonoBehaviourPun
+    public class EnemySpawn : MonoBehaviour
     {
         Vector2 min, max;
         float spawnRate, spawnBorder = 2f;
 
         void Start()
         {
-            if (!PhotonNetwork.IsMasterClient) return;
             spawnRate = LevelHandler.Instance.current.enemySpawnRate;
             min = LevelHandler.Instance.current.minBounds + new Vector2(spawnBorder, spawnBorder);
             max = LevelHandler.Instance.current.maxBounds - new Vector2(spawnBorder, spawnBorder);
@@ -32,7 +30,6 @@ namespace Com.Jervw.Crimson
         void SpawnEnemy()
         {
             var spawnPos = new Vector2(Random.Range(min.x, max.x), Random.Range(min.y, max.y));
-            PhotonNetwork.Instantiate("Zombie", spawnPos, Quaternion.identity);
             LevelHandler.Instance.enemyCount++;
         }
     }

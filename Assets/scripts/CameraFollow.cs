@@ -1,9 +1,8 @@
 using UnityEngine;
-using Photon.Pun;
 
 namespace Com.Jervw.Crimson
 {
-    public class CameraFollow : MonoBehaviourPunCallbacks
+    public class CameraFollow : MonoBehaviour
     {
         const float SMOOTH_AMOUNT = 0.125f;
 
@@ -15,7 +14,6 @@ namespace Com.Jervw.Crimson
 
         void Start()
         {
-            if (!photonView.IsMine) return;
 
             cam = Camera.main;
             minBounds = LevelHandler.Instance.current.minBounds;
@@ -26,8 +24,6 @@ namespace Com.Jervw.Crimson
 
         void LateUpdate()
         {
-            if (!photonView.IsMine) return;
-
             var desiredPosition = transform.position + cameraOffset;
             var smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, SMOOTH_AMOUNT);
             cam.transform.position = smoothedPosition;

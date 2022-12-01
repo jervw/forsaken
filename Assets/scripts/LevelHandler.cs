@@ -1,7 +1,6 @@
 using UnityEngine;
-using Photon.Pun;
 
-public class LevelHandler : MonoBehaviourPun
+public class LevelHandler : MonoBehaviour
 {
     public static LevelHandler Instance { get; private set; }
 

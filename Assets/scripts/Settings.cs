@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
@@ -15,7 +11,7 @@ public class Settings : MonoBehaviour
 
     GameObject settingsPanel;
     Slider sfxSlider, musicSlider;
-    TMPro.TMP_Dropdown resolutionDropdown;
+    TMP_Dropdown resolutionDropdown;
     Toggle fullscreenToggle;
 
     void Awake()
@@ -31,7 +27,7 @@ public class Settings : MonoBehaviour
         var sliders = settingsPanel.GetComponentsInChildren<Slider>();
         sfxSlider = sliders[0];
         musicSlider = sliders[1];
-        resolutionDropdown = settingsPanel.GetComponentInChildren<TMPro.TMP_Dropdown>();
+        resolutionDropdown = settingsPanel.GetComponentInChildren<TMP_Dropdown>();
         fullscreenToggle = settingsPanel.GetComponentInChildren<Toggle>();
 
 
@@ -55,7 +51,7 @@ public class Settings : MonoBehaviour
         int currentResolutionIndex = 0;
         foreach (var res in Screen.resolutions)
         {
-            resolutionDropdown.options.Add(new TMPro.TMP_Dropdown.OptionData(res.width + "x" + res.height + " @ " + res.refreshRate + "Hz"));
+            resolutionDropdown.options.Add(new TMP_Dropdown.OptionData(res.width + "x" + res.height + " @ " + res.refreshRate + "Hz"));
             if (res.width == Screen.currentResolution.width && res.height == Screen.currentResolution.height && res.refreshRate == Screen.currentResolution.refreshRate)
                 currentResolutionIndex = resolutionDropdown.options.Count - 1;
         }

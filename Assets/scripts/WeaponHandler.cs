@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-using Photon.Pun;
 
-public class WeaponHandler : MonoBehaviourPun
+public class WeaponHandler : MonoBehaviour
 {
     public Transform firePosition, upperBody;
     public WeaponData[] possibleWeapons;
@@ -52,7 +51,7 @@ public class WeaponHandler : MonoBehaviourPun
     void RegularShot()
     {
         var rotation = Quaternion.Euler(upperBody.transform.rotation.eulerAngles - GetSpread());
-        PhotonNetwork.Instantiate(currentWeapon.projectile.name, firePosition.transform.position, rotation);
+        //PhotonNetwork.Instantiate(currentWeapon.projectile.name, firePosition.transform.position, rotation);
         currentAmmo--;
     }
 
@@ -61,7 +60,7 @@ public class WeaponHandler : MonoBehaviourPun
         for (int i = 0; i < currentWeapon.bulletsPerShot; i++)
         {
             var rotation = Quaternion.Euler(upperBody.transform.rotation.eulerAngles - GetSpread());
-            PhotonNetwork.Instantiate(currentWeapon.projectile.name, firePosition.transform.position, rotation);
+            //PhotonNetwork.Instantiate(currentWeapon.projectile.name, firePosition.transform.position, rotation);
         }
         currentAmmo--;
     }

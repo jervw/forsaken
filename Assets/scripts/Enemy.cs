@@ -1,12 +1,10 @@
 using System.Collections;
 using UnityEngine;
-using Photon.Pun;
-using Photon.Realtime;
 
 
 namespace Com.Jervw.Crimson
 {
-    public class Enemy : MonoBehaviourPun
+    public class Enemy : MonoBehaviour
     {
         [SerializeField] int maxHp;
         [SerializeField] float chaseSpeed, attackRate, attackRange;
@@ -71,14 +69,12 @@ namespace Com.Jervw.Crimson
 
         public void OnDeath(bool drop = true)
         {
-            photonView.RPC("OnDeathRPC", RpcTarget.All);
 
-            if (drop && Random.value * 100 <= (LevelHandler.Instance.current.pickupChance))
-                PhotonNetwork.Instantiate("Pickup", transform.position, Quaternion.identity);
+            //if (drop && Random.value * 100 <= (LevelHandler.Instance.current.pickupChance))
+            //PhotonNetwork.Instantiate("Pickup", transform.position, Quaternion.identity);
         }
 
 
-        [PunRPC]
         void OnDeathRPC()
         {
             // play random sound
@@ -129,7 +125,7 @@ namespace Com.Jervw.Crimson
                 currentHp -= other.gameObject.GetComponent<Projectile>().Damage;
                 hitParticles.Play();
                 AudioManager.Instance.Play("zombie_hit");
-                PhotonNetwork.Instantiate("Blood", transform.position, Quaternion.identity);
+                //PhotonNetwork.Instantiate("Blood", transform.position, Quaternion.identity);
                 Destroy(other.gameObject);
             }
 

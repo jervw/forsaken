@@ -1,10 +1,9 @@
 using System;
 using UnityEngine;
-using Photon.Pun;
 using Random = UnityEngine.Random;
 
 
-public class Pickup : MonoBehaviourPunCallbacks
+public class Pickup : MonoBehaviour
 {
     public PickupData[] pickups;
 
@@ -50,8 +49,8 @@ public class Pickup : MonoBehaviourPunCallbacks
             var obj = Instantiate(effect, transform.position, Quaternion.identity, player.transform);
             obj.name = effect.name;
         }
-        else
-            PhotonNetwork.Instantiate(effect.name, transform.position, Quaternion.identity);
+
+        // else   PhotonNetwork.Instantiate(effect.name, transform.position, Quaternion.identity);
     }
 
     void OnTriggerEnter2D(Collider2D other)
