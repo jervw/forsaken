@@ -10,8 +10,7 @@ public class GameManager : MonoBehaviour
     public static event Action<GameState> OnAfterStateChanged;
 
     public GameState State { get; private set; }
-    public GameObject pauseMenu, winMenu, loseMenu;
-
+    [SerializeField] GameObject pauseMenu, winMenu, loseMenu;
 
     void Awake()
     {
