@@ -2,7 +2,9 @@ using System;
 using UnityEngine;
 using UnityEngine.Audio;
 
-
+/// <summary>
+/// This is static class for audio management in the game. 
+/// </summary>
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
@@ -12,15 +14,21 @@ public class AudioManager : MonoBehaviour
     void Awake()
     {
         if (!Instance)
+        {
             Instance = this;
+        }
         else
+        {
             Destroy(gameObject);
+        }
 
         DontDestroyOnLoad(gameObject);
         LoadSounds();
     }
 
-
+    /// <summary>
+    /// Loads all sounds from the sounds array into the audio mixer.
+    /// </summary>
     void LoadSounds()
     {
         foreach (var s in sounds)
@@ -34,33 +42,57 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void Play(string name)
+    /// <summary>
+    /// Plays a sound by the the track name. Given track must be in the sounds array.
+    /// </summary>
+    /// <param name="trackName"></param>
+    public void Play(string trackName)
     {
-        Sound s = Array.Find(sounds, sound => sound.clip.name == name);
+        var sound = Array.Find(sounds, sound => sound.clip.name == trackName);
 
-        if (s)
-            s.source.Play();
+        if (sound)
+        {
+            sound.source.Play();
+        }
         else
-            Debug.LogWarning("Sound: " + name + " not found!");
+        {
+            Debug.LogWarning($"Sound: {trackName} not found!");
+        }
     }
 
-    public void Pause(string name)
+    /// <summary>
+    /// Pause the sound by the track name. Given track must be in the sounds array.
+    /// </summary>
+    /// <param name="trackName"></param>
+    public void Pause(string trackName)
     {
-        Sound s = Array.Find(sounds, sound => sound.clip.name == name);
+        var sound = Array.Find(sounds, sound => sound.clip.name == trackName);
 
-        if (s)
-            s.source.Pause();
+        if (sound)
+        {
+            sound.source.Pause();
+        }
         else
-            Debug.LogWarning("Sound: " + name + " not found!");
+        {
+            Debug.LogWarning($"Sound {trackName} not found!");
+        }
     }
-
-    public void Stop(string name)
+    
+    /// <summary>
+    /// Stops the sound given by the track name. Given track must be in the sounds array.
+    /// </summary>
+    /// <param name="trackName"></param>
+    public void Stop(string trackName)
     {
-        Sound s = Array.Find(sounds, sound => sound.clip.name == name);
+        var sound = Array.Find(sounds, sound => sound.clip.name == trackName);
 
-        if (s)
-            s.source.Stop();
+        if (sound)
+        {
+            sound.source.Stop();
+        }
         else
-            Debug.LogWarning("Sound: " + name + " not found!");
+        {
+            Debug.LogWarning($"Sound {trackName} not found!");
+        }
     }
 }
