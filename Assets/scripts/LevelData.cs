@@ -5,6 +5,7 @@ public class LevelData : ScriptableObject
 {
     public string sceneName;
     public string levelName;
+    public Sprite levelSprite;
     public GameObject playerPrefab;
     public GameObject[] enemyPrefabs;
     [Header("Pickup settings")]

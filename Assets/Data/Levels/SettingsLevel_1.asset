@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneName: Level_1
   levelName: Forest
+  levelSprite: {fileID: 21300000, guid: cd2e828c337effb48be73fba1daa09ed, type: 3}
   playerPrefab: {fileID: 6685625820639829394, guid: 1cdfe0d4bf411c642b6ea01891164cd5, type: 3}
   enemyPrefabs: []
-  pickupChance: 50
+  pickupChance: 25
   enemyCountMax: 20
   enemySpawnDelay: 5
   enemySpawnRate: 4
